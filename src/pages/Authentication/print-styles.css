@@ -1,0 +1,14 @@
+@media print {
+    body {
+      color: black;
+    }
+  
+    .bg-boxdark {
+      background-color: white !important; /* Set background color to white for printing */
+    }
+  
+    .border-strokedark {
+      border-color: black !important; /* Set border color to black for printing */
+    }
+  }
+  
