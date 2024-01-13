@@ -8,7 +8,7 @@ interface FormData {
   password: string;
   email: string;
   coach_name: string;
-  phone:string;
+  phone: string;
 }
 
 const SignUp = () => {
@@ -27,9 +27,9 @@ const SignUp = () => {
     password: '',
     email: '',
     coach_name: '',
-    phone:''
+    phone: '',
   });
-  const [collectedOtp, setcollectedOtp] = useState()
+  const [collectedOtp, setcollectedOtp] = useState();
   const handlePasswordChange = (event: {
     target: { value: SetStateAction<string> };
   }) => {
@@ -46,8 +46,6 @@ const SignUp = () => {
     setPasswordsMatch(event.target.value === password);
   };
 
- 
-  
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -59,25 +57,26 @@ const SignUp = () => {
     const coach_name = form.elements.namedItem(
       'coach_name',
     ) as HTMLInputElement;
-   
 
     if (password.value === retypePassword) {
-      
       setFormData({
-      name: name.value,
-      password: password.value,
-      email: email.value,
-      coach_name: coach_name.value,
-      phone:phone.value,
-    }) 
+        name: name.value,
+        password: password.value,
+        email: email.value,
+        coach_name: coach_name.value,
+        phone: phone.value,
+      });
       try {
         // Make a POST request using Axios
-        const {data}: any = await axiosInstanceNoToken.post('/api/clubs/otpcreate/', {email:email.value});
-        console.log(data.otp,"this is sended otp.......");
-        
+        const { data }: any = await axiosInstanceNoToken.post(
+          '/api/clubs/otpcreate/',
+          { email: email.value },
+        );
+        console.log(data.otp, 'this is sended otp.......');
+
         setcollectedOtp(data.otp);
-        console.log("setted otp",collectedOtp);
-        
+        console.log('setted otp', collectedOtp);
+
         // Handle the response accordingly
         // console.log(response.data);
         setverifymailcomponent(true);
@@ -93,17 +92,23 @@ const SignUp = () => {
     }
   };
   const handleRegister = async (otp: number): Promise<boolean> => {
-    console.log(formData,"this is formdata");
-    
-    console.log(collectedOtp,otp);
-    
+    console.log(formData, 'this is formdata');
+
+    console.log(collectedOtp, otp);
+
     if (collectedOtp == otp) {
       try {
         // Make a POST request using Axios
-        const {data}: any = await axiosInstanceNoToken.post('/api/clubs/', formData);
-        console.log("igot resposee..........................................",data);
+        const { data }: any = await axiosInstanceNoToken.post(
+          '/api/clubs/',
+          formData,
+        );
+        console.log(
+          'igot resposee..........................................',
+          data,
+        );
         localStorage.setItem('user', JSON.stringify(data));
-        
+
         return true;
       } catch (error) {
         // Handle errors
@@ -111,15 +116,13 @@ const SignUp = () => {
         return false;
       }
     } else {
-
       return false;
     }
   };
-  
 
   return (
     <>
-      <div className="  h-screen  flex flex-col justify-center  rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+      <div className=" bg-black  h-screen  flex flex-col justify-center  rounded-sm border border-stroke  shadow-default dark:border-strokedark dark:bg-boxdark">
         <div className="flex flex-wrap items-center">
           <div className="hidden w-full xl:block xl:w-1/2">
             <div className="flex justify-center items-center  ">
@@ -129,14 +132,11 @@ const SignUp = () => {
               />
             </div>
           </div>
-
-          <div className="w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
+          <div className=" h-49  sm:hidden">.</div>
+          <div className="w-full  border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2  ">
             <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
               {verifymailcomponent == false ? (
                 <>
-                  <span className="mb-1.5 block font-medium">
-                    Start for free
-                  </span>
                   <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
                     Sign Up to Register
                   </h2>
@@ -263,8 +263,6 @@ const SignUp = () => {
                         name="phone"
                         type="text"
                         placeholder="Enter your phone"
-                       
-              
                         className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-red-700 focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-red-700"
                       />
                       <span className="absolute right-4 top-4">
@@ -272,7 +270,6 @@ const SignUp = () => {
                       </span>
                     </div>
                   </div>
-                  
 
                   {/* Password input */}
                   <div className="mb-4">
