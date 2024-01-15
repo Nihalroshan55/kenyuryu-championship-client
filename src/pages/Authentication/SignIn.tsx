@@ -15,7 +15,6 @@ const SignIn = () => {
   }, []);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log("workerdddd............");
   
     const form = event.target as HTMLFormElement;
     const password = form.elements.namedItem('password') as HTMLInputElement;
@@ -27,17 +26,19 @@ const SignIn = () => {
         '/api/clubs/login/',
         { email: email.value, password: password.value }, // Use password.value instead of password
       );
-      console.log(data, 'this is data.......');
   
       if (data) {
-        console.log("success");
         localStorage.setItem('user', JSON.stringify(data));
         navigate('/home')
       } else {
         setinvalidPassword(true)
       }
-    } catch (error) {
+    } catch (error:any) {
       console.error('Error submitting form:', error);
+      if(error?.response.status==401){
+        
+        setinvalidPassword(true)
+      }
     }
   };
   
@@ -143,7 +144,7 @@ const SignIn = () => {
                 <div className="mt-6 text-center">
                   {invalidPassword && (
                       <p className="text-red-700 mt-2">
-                        Passwords do not match
+                        invalid crdentials
                       </p>
                     )}
                   <p>

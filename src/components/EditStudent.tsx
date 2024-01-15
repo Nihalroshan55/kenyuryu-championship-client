@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Button,
   Dialog,
@@ -8,16 +8,64 @@ import {
 } from '@material-tailwind/react';
 import CheckboxTwo from './CheckboxTwo';
 import { axiosInstance } from '../axios/config';
-
+interface User {
+  id: number;
+  name: string;
+  age: number;
+  gender: string;
+  belt_color: string;
+  weight: number;
+  kata: boolean;
+  kumite: boolean;
+  category: string;
+  weight_category: string;
+  entry_fee: number;
+  club: number;
+}
 interface YourComponentProps {
   size: any | string | undefined; // Adjust the type for size
   handleOpen: (arg: any) => void; // Adjust the type for handleOpen if needed
+  id: number | undefined;
 }
 
-const AddStudent: React.FC<YourComponentProps> = ({ size, handleOpen }) => {
+const EditStudent: React.FC<YourComponentProps> = ({
+  size,
+  handleOpen,
+  id,
+}) => {
+
+  
   const [kata, setkata] = useState(false);
   const [kumita, setkumita] = useState(false);
   const formRef = useRef<HTMLFormElement | null>(null);
+  
+  
+  // Usage in your component
+  const [user, setuser] = useState<User | null>(null);
+  useEffect(() => {
+    getStudent();
+    return () => {
+      formRef.current?.reset();
+    }
+  }, [id,size]);
+
+  
+
+  const getStudent = async () => {
+    try {
+      // Make a POST request using Axios
+      const { data }: any = await axiosInstance.get(`/api/candidates/${id}/`);
+
+      if (data) {
+        setuser(data);
+        setkata(data?.kata as boolean)
+        setkumita(data?.kumite as boolean)
+      }
+    } catch (error: any) {
+      console.error('Error sstudent fetched for edit:', error);
+    }
+  };
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -25,20 +73,18 @@ const AddStudent: React.FC<YourComponentProps> = ({ size, handleOpen }) => {
     const gender = form.elements.namedItem('gender') as HTMLInputElement;
     const name = form.elements.namedItem('name') as HTMLInputElement;
     const weightElement = form.elements.namedItem('weight') as HTMLInputElement;
-    const weight = weightElement.value
+    const weight = weightElement.value;
     const belt_color = form.elements.namedItem(
       'belt_color',
     ) as HTMLInputElement;
     const age = form.elements.namedItem('age') as HTMLInputElement;
-    const { id } = JSON.parse(localStorage.getItem('user') as string).user;
 
     try {
       // Make a POST request using Axios
-      const { data }: any = await axiosInstance.post(
-        '/api/candidates/',
+      const { data }: any = await axiosInstance.patch(
+        `/api/candidates/${id}/`,
         {
-          name:name.value,
-          club: id,
+          name: name.value,
           gender: gender.value,
           weight: weight,
           belt_color: belt_color.value,
@@ -61,6 +107,7 @@ const AddStudent: React.FC<YourComponentProps> = ({ size, handleOpen }) => {
     // Access the form using the ref and submit it
     formRef?.current?.dispatchEvent(new Event('submit', { bubbles: true }));
   };
+
 
   return (
     <>
@@ -85,6 +132,7 @@ const AddStudent: React.FC<YourComponentProps> = ({ size, handleOpen }) => {
                     <input
                       type="text"
                       name="name"
+                      defaultValue={user?.name}
                       placeholder="Enter Player full name"
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                     />
@@ -97,6 +145,7 @@ const AddStudent: React.FC<YourComponentProps> = ({ size, handleOpen }) => {
                     <input
                       type="text"
                       name="age"
+                      defaultValue={user?.age}
                       placeholder="Enter Player Age"
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                     />
@@ -109,6 +158,7 @@ const AddStudent: React.FC<YourComponentProps> = ({ size, handleOpen }) => {
                     </label>
                     <select
                       name="gender"
+                      value={`${user?.gender}`}
                       className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                     >
                       <option disabled value="">
@@ -125,6 +175,8 @@ const AddStudent: React.FC<YourComponentProps> = ({ size, handleOpen }) => {
                     </label>
                     <select
                       name="belt_color"
+                      value={user?.belt_color || ''}
+
                       className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                     >
                       <option disabled selected value="">
@@ -142,34 +194,33 @@ const AddStudent: React.FC<YourComponentProps> = ({ size, handleOpen }) => {
                       Events
                     </label>
                     <div className="w-full flex justify-center gap-15 rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
-                      <CheckboxTwo
-                        key={1}
-                        value={'Kata'}
-                        setIsChecked={setkata}
-                        isChecked={kata}
-                      />
-                      <CheckboxTwo
-                        key={2}
-                        value={'Kumita'}
-                        setIsChecked={setkumita}
-                        isChecked={kumita}
-                      />
+                    <CheckboxTwo
+                      key={1}
+                      value={'Kata'}
+                      setIsChecked={setkata}
+                      isChecked={kata}
+                    />
+                    <CheckboxTwo
+                      key={2}
+                      value={'Kumita'}
+                      setIsChecked={setkumita}
+                      isChecked={kumita}
+                    />
                     </div>
                   </div>
                   <div className="w-full xl:w-1/2">
-                    
-                      <>
-                        <label className="mb-2.5 block text-black dark:text-white">
-                          Weight
-                        </label>
-                        <input
-                          name="weight"
-                          type="number"
-                          placeholder="Enter Player weight"
-                          className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                        />
-                      </>
-                    
+                    <>
+                      <label className="mb-2.5 block text-black dark:text-white">
+                        Weight
+                      </label>
+                      <input
+                        name="weight"
+                        type="number"
+                        defaultValue={user?.weight}
+                        placeholder="Enter Player weight"
+                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                      />
+                    </>
                   </div>
                 </div>
               </div>
@@ -180,7 +231,10 @@ const AddStudent: React.FC<YourComponentProps> = ({ size, handleOpen }) => {
           <Button
             variant="text"
             color="red"
-            onClick={() => handleOpen(null)}
+            onClick={() => {
+              setuser(null)
+              handleOpen(null)
+              }}
             className="mr-1"
           >
             <span>Cancel</span>
@@ -194,4 +248,4 @@ const AddStudent: React.FC<YourComponentProps> = ({ size, handleOpen }) => {
   );
 };
 
-export default AddStudent;
+export default EditStudent;

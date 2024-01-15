@@ -1,15 +1,67 @@
 import { IoCheckmarkDoneSharp } from 'react-icons/io5';
 import { MdOutlineNotInterested } from 'react-icons/md';
-import { AiOutlineDelete } from "react-icons/ai";
+import { AiOutlineDelete } from 'react-icons/ai';
 import { FiEdit3 } from 'react-icons/fi';
-const TableThree = () => {
+import React, { useEffect, useState } from 'react';
+import { axiosInstance } from '../axios/config';
+import toast from 'react-hot-toast';
+import EditStudent from './EditStudent';
+
+const TableThree = ({ size }: any) => {
+  const [sizes, setSize] = React.useState(null);
+  const [editId, seteditId] = useState()
+  const handleOpen = (value: any) => setSize(value);
+  const { id } = JSON.parse(localStorage.getItem('user') as string).user;
+
+  const [AllPlayers, setAllPlayers] = useState([]);
+  useEffect(() => {
+    fetchPlayers();
+  }, [size,sizes]);
+
+  const fetchPlayers = async () => {
+    try {
+      const { data }: any = await axiosInstance.get(
+        `/api/candidates/club_candidates/?club=${id}`,
+      );
+      setAllPlayers(data);
+      if (data) {
+      }
+    } catch (error: any) {
+      console.error('Error fetchitn:', error);
+    }
+  };
+
+  const deletePlayer = async (id: number) => {
+    // Show a confirmation dialog using window.confirm
+    const userConfirmed = window.confirm('Are you sure you want to delete this player?');
+
+    if (userConfirmed) {
+      // Perform the actual delete action
+      try {
+        const { data }: any = await axiosInstance.delete(`/api/candidates/${id}`);
+        fetchPlayers()
+        if (data) {
+          toast.success('Player Deleted Successfully', {
+            position: 'top-center',
+          });
+        }
+      } catch (error: any) {
+        toast.error('Error Occurred, try again.. !', {
+          position: 'top-left',
+        });
+      }
+    }
+  };
+
+  
+
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
       <div className="max-w-full overflow-x-auto">
         <table className="w-full table-auto">
           <thead>
             <tr className="bg-gray-2 text-left dark:bg-meta-4">
-            <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
+              <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
                 Name
               </th>
               <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
@@ -36,49 +88,59 @@ const TableThree = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
+            {AllPlayers.length!=0?AllPlayers.map((item:any, index) => (
+              
+              <tr key={index}>
               {/* <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                 <h5 className="font-medium text-black dark:text-white">
                   Sally Quinn
                 </h5>
               </td> */}
               <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                Sally Quinn
+                {item.name}
               </td>
               <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                25
+                {item.age}
               </td>
 
               <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                Male
+                {item.gender=="M"?'Male':"Female"}
               </td>
               <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                27 Kg
+                {item.weight}
               </td>
               <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                colour
+                {item.belt_color}
               </td>
               <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                <IoCheckmarkDoneSharp size={25} />
+               {item.kata?<IoCheckmarkDoneSharp size={25} />:<MdOutlineNotInterested size={25} />} 
               </td>
               <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                <MdOutlineNotInterested size={25} />
+              {item.kumite?<IoCheckmarkDoneSharp size={25} />:<MdOutlineNotInterested size={25} />} 
+
               </td>
 
               <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                 <div className="flex items-center space-x-3.5">
-                  <button className="hover:text-primary">
-                  <AiOutlineDelete size={20} />
+                  <button onClick={()=>deletePlayer(item.id)} className="hover:text-primary">
+                    <AiOutlineDelete size={20} />
                   </button>
-                  <button className="hover:text-primary">
+                  <button onClick={() =>{
+                    seteditId(item.id)
+                    handleOpen('lg')
+                  }} className="hover:text-primary">
                     <FiEdit3 size={20} />
                   </button>
                 </div>
               </td>
             </tr>
+             
+            )):<></>}
+           
           </tbody>
         </table>
       </div>
+      <EditStudent id={editId} size={sizes} handleOpen={handleOpen} />
     </div>
   );
 };

@@ -18,7 +18,7 @@ const ECommerce = () => {
               </p>
             </div>
            
-            <TableThree />
+            <TableThree size={size} />
             <div className=" border-stroke flex justify-end py-4 dark:border-strokedark">
               <div
                 onClick={() => handleOpen('lg')}

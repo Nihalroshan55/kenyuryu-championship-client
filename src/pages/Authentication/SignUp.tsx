@@ -3,6 +3,7 @@ import { SetStateAction, useEffect, useState } from 'react';
 import useColorMode from '../../hooks/useColorMode';
 import { Verifyemail } from '../../components/verifyemail';
 import { axiosInstance, axiosInstanceNoToken } from '../../axios/config';
+import toast from 'react-hot-toast';
 interface FormData {
   name: string;
   password: string;
@@ -70,31 +71,31 @@ const SignUp = () => {
         // Make a POST request using Axios
         const { data }: any = await axiosInstanceNoToken.post(
           '/api/clubs/otpcreate/',
-          { email: email.value },
+          { email: email.value, password: password.value },
         );
-        console.log(data.otp, 'this is sended otp.......');
 
         setcollectedOtp(data.otp);
-        console.log('setted otp', collectedOtp);
 
         // Handle the response accordingly
-        // console.log(response.data);
         setverifymailcomponent(true);
-      } catch (error) {
+      } catch (error: any) {
         // Handle errors
+        if (error.response.data.error == 'Active Club found in gven Email Id') {
+
+          toast.error('Already have an account with this email Please login', {
+            position: 'top-center',
+          });
+        }
         console.error('Error submitting form:', error);
       }
 
       // Your form submission logic here
-      console.log('Form submitted with data:', formData);
     } else {
       setPasswordsMatch(false);
     }
   };
   const handleRegister = async (otp: number): Promise<boolean> => {
-    console.log(formData, 'this is formdata');
 
-    console.log(collectedOtp, otp);
 
     if (collectedOtp == otp) {
       try {
@@ -103,16 +104,17 @@ const SignUp = () => {
           '/api/clubs/',
           formData,
         );
-        console.log(
-          'igot resposee..........................................',
-          data,
-        );
+       
         localStorage.setItem('user', JSON.stringify(data));
 
         return true;
-      } catch (error) {
+      } catch (error: any) {
         // Handle errors
+
         console.error('Error submitting form:', error);
+        toast.error(error.response, {
+          position: 'top-center',
+        });
         return false;
       }
     } else {

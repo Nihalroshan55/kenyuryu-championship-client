@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 
-const baseURL = 'http://10.4.5.73:8000';
+const baseURL = 'https://ajayraj.cloud';
 const adminUrl = 'import.meta.env.VITE_ADMINBASEURL'
 
 // Axios instance for regular user
