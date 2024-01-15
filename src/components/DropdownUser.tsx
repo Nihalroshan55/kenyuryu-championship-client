@@ -9,7 +9,9 @@ const DropdownUser = () => {
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
   const navitgate=useNavigate()
-  const { name ,coach_name } = JSON.parse(localStorage.getItem('user') as string).user;
+  const storedUserData = localStorage.getItem('user');
+  const { name, coach_name } = storedUserData ? JSON.parse(storedUserData).user : {name:"",coach_name:""};
+  
 
   // close on click outside
   useEffect(() => {
@@ -47,9 +49,9 @@ const DropdownUser = () => {
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            {name}
+            {name||''}
           </span>
-          <span className="block text-xs">{coach_name}</span>
+          <span className="block text-xs">{coach_name||''}</span>
         </span>
 
         <span className="h-12 w-12 rounded-full">
