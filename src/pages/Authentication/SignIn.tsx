@@ -8,10 +8,18 @@ const SignIn = () => {
   const [colorMode, setColorMode] = useColorMode();
   const navigate=useNavigate()
   const [invalidPassword, setinvalidPassword] = useState(false)
+  let userDetails = localStorage.getItem("user");
+  
+  
   useEffect(() => {
     if (typeof setColorMode === 'function') {
       setColorMode('dark');
     }
+    if (userDetails) {
+      const user = JSON.parse(userDetails)?.access || false;
+      user?navigate('/home'):console.log('please Login');
+      
+    } 
   }, []);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

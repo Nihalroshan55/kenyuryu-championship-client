@@ -8,6 +8,7 @@ import {
 } from '@material-tailwind/react';
 import CheckboxTwo from './CheckboxTwo';
 import { axiosInstance } from '../axios/config';
+import toast from 'react-hot-toast';
 
 interface YourComponentProps {
   size: any | string | undefined; // Adjust the type for size
@@ -17,6 +18,8 @@ interface YourComponentProps {
 const AddStudent: React.FC<YourComponentProps> = ({ size, handleOpen }) => {
   const [kata, setkata] = useState(false);
   const [kumita, setkumita] = useState(false);
+  const [invalidPassword, setinvalidPassword] = useState(false)
+
   const formRef = useRef<HTMLFormElement | null>(null);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -31,7 +34,11 @@ const AddStudent: React.FC<YourComponentProps> = ({ size, handleOpen }) => {
     ) as HTMLInputElement;
     const age = form.elements.namedItem('age') as HTMLInputElement;
     const { id } = JSON.parse(localStorage.getItem('user') as string).user;
-
+if(!kata&&!kumita){
+  alert("please Select Atleast one Event")
+}else if(!gender.value||!name.value||!weight||!belt_color.value||!age.value){
+  alert("please Fill All Input Fields")
+}else{
     try {
       // Make a POST request using Axios
       const { data }: any = await axiosInstance.post(
@@ -52,8 +59,10 @@ const AddStudent: React.FC<YourComponentProps> = ({ size, handleOpen }) => {
         handleOpen(null);
       }
     } catch (error: any) {
+
       console.error('Error submitting form:', error);
-    }
+      setinvalidPassword(true)
+    }}
   };
 
   const handleSubmitButton = (event: React.MouseEvent) => {
@@ -72,20 +81,27 @@ const AddStudent: React.FC<YourComponentProps> = ({ size, handleOpen }) => {
       >
         <DialogHeader className="text-black dark:text-white">
           Add Player
+          
         </DialogHeader>
+        
         <DialogBody>
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+            
           <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
             <form ref={formRef} onSubmit={handleSubmit}>
               <div className="p-6.5">
+              
                 <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
+               
                   <div className="w-full xl:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">
                       Full Name
                     </label>
                     <input
+                    required
                       type="text"
                       name="name"
+                      minLength={3}
                       placeholder="Enter Player full name"
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                     />
@@ -96,7 +112,10 @@ const AddStudent: React.FC<YourComponentProps> = ({ size, handleOpen }) => {
                       Age
                     </label>
                     <input
+                    required
                       type="text"
+                      min={1}
+                      max={100}
                       name="age"
                       placeholder="Enter Player Age"
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
@@ -109,6 +128,7 @@ const AddStudent: React.FC<YourComponentProps> = ({ size, handleOpen }) => {
                       Gender
                     </label>
                     <select
+                    required
                       name="gender"
                       className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                     >
@@ -125,6 +145,7 @@ const AddStudent: React.FC<YourComponentProps> = ({ size, handleOpen }) => {
                       Belt
                     </label>
                     <select
+                    required
                       name="belt_color"
                       className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                     >
@@ -164,8 +185,11 @@ const AddStudent: React.FC<YourComponentProps> = ({ size, handleOpen }) => {
                           Weight
                         </label>
                         <input
+                        required
                           name="weight"
                           type="number"
+                          min={5}
+                          max={200}
                           placeholder="Enter Player weight"
                           className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                         />
@@ -179,6 +203,11 @@ const AddStudent: React.FC<YourComponentProps> = ({ size, handleOpen }) => {
           </div>
         </DialogBody>
         <DialogFooter>
+        {invalidPassword && (
+                      <p className="text-red-700 ">
+                         You Are Entered invalid Details
+                      </p>
+                    )}
           <Button
             variant="text"
             color="red"

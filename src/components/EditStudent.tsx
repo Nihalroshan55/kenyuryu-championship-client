@@ -78,7 +78,11 @@ const EditStudent: React.FC<YourComponentProps> = ({
       'belt_color',
     ) as HTMLInputElement;
     const age = form.elements.namedItem('age') as HTMLInputElement;
-
+    if(!kata&&!kumita){
+      alert("please Select Atleast one Event")
+    }else if(!gender.value||!name.value||!weight||!belt_color.value||!age.value){
+      alert("please Fill All Input Fields")
+    }else{
     try {
       // Make a POST request using Axios
       const { data }: any = await axiosInstance.patch(
@@ -99,7 +103,7 @@ const EditStudent: React.FC<YourComponentProps> = ({
       }
     } catch (error: any) {
       console.error('Error submitting form:', error);
-    }
+    }}
   };
 
   const handleSubmitButton = (event: React.MouseEvent) => {
@@ -131,6 +135,8 @@ const EditStudent: React.FC<YourComponentProps> = ({
                       Full Name
                     </label>
                     <input
+                    required
+                    minLength={3}
                       type="text"
                       name="name"
                       defaultValue={user?.name}
@@ -144,6 +150,9 @@ const EditStudent: React.FC<YourComponentProps> = ({
                       Age
                     </label>
                     <input
+                    required
+                    min={1}
+                    max={100}
                       type="text"
                       name="age"
                       defaultValue={user?.age}
@@ -158,6 +167,7 @@ const EditStudent: React.FC<YourComponentProps> = ({
                       Gender
                     </label>
                     <select
+                    required
                       name="gender"
                       value={`${user?.gender}`}
                       className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
@@ -175,6 +185,7 @@ const EditStudent: React.FC<YourComponentProps> = ({
                       Belt
                     </label>
                     <select
+                    required
                       name="belt_color"
                       value={user?.belt_color || ''}
 
@@ -215,6 +226,9 @@ const EditStudent: React.FC<YourComponentProps> = ({
                         Weight
                       </label>
                       <input
+                      min={5}
+                      max={200}
+                      required
                         name="weight"
                         type="number"
                         defaultValue={user?.weight}

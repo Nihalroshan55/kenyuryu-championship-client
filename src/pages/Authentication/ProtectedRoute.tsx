@@ -10,7 +10,7 @@ function ProtectedRoute({ children }: ProtectedRouteProps): JSX.Element {
   
   if (userDetails) {
     const user = JSON.parse(userDetails)?.access || false;
-    return user ? <>{children}</> : <Navigate to="/login" />;
+    return user ? <>{children}</> : <Navigate to="/auth/signin" />;
   } 
   
   return <Navigate to="/auth/signin" />;

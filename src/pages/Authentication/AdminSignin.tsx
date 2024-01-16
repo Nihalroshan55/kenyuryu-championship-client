@@ -14,7 +14,9 @@ const AdminSignIn = () => {
     }
   }, []);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    // event.preventDefault();  
+    // event.preventDefault();
+    // console.log("workerdddd............");
+  
     // const form = event.target as HTMLFormElement;
     // const password = form.elements.namedItem('password') as HTMLInputElement;
     // const email = form.elements.namedItem('email') as HTMLInputElement;
@@ -25,8 +27,10 @@ const AdminSignIn = () => {
     //     '/api/clubs/login/',
     //     { email: email.value, password: password.value }, // Use password.value instead of password
     //   );
+    //   console.log(data, 'this is data.......');
   
     //   if (data) {
+    //     console.log("success");
     //     localStorage.setItem('user', JSON.stringify(data));
     //     navigate('/home')
     //   } else {

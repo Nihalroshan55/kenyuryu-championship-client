@@ -10,7 +10,7 @@ function AdminProtectedRoute({ children }: ProtectedRouteProps): JSX.Element {
   
   if (adminDetails) {
     const admin = JSON.parse(adminDetails)?.access || false;
-    return admin ? <>{children}</> : <Navigate to="/login" />;
+    return admin ? <>{children}</> : <Navigate to="/auth/admin/signin" />;
   } 
   
   return <Navigate to="/auth/admin/signin" />;

@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { SetStateAction, useEffect, useState } from 'react';
 import useColorMode from '../../hooks/useColorMode';
 import { Verifyemail } from '../../components/verifyemail';
@@ -13,12 +13,19 @@ interface FormData {
 }
 
 const SignUp = () => {
+  let navigate=useNavigate()
+  let userDetails = localStorage.getItem("user");
   const [colorMode, setColorMode] = useColorMode();
   const [verifymailcomponent, setverifymailcomponent] = useState(false);
   useEffect(() => {
     if (typeof setColorMode === 'function') {
       setColorMode('dark');
     }
+    if (userDetails) {
+      const user = JSON.parse(userDetails)?.access || false;
+      user?navigate('/home'):console.log('please Login');
+      
+    } 
   }, []);
   const [password, setPassword] = useState('');
   const [retypePassword, setRetypePassword] = useState('');
