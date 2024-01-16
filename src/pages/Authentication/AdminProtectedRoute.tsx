@@ -13,6 +13,7 @@ function AdminProtectedRoute({ children }: ProtectedRouteProps): JSX.Element {
     return admin ? <>{children}</> : <Navigate to="/auth/admin/signin" />;
   } 
   
+  // return  <>{children}</>
   return <Navigate to="/auth/admin/signin" />;
 }
 
