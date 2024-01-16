@@ -122,6 +122,7 @@ const EditStudent: React.FC<YourComponentProps> = ({
         </DialogHeader>
         <DialogBody>
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+          <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
             <form ref={formRef} onSubmit={handleSubmit}>
               <div className="p-6.5">
                 <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
@@ -225,6 +226,7 @@ const EditStudent: React.FC<YourComponentProps> = ({
                 </div>
               </div>
             </form>
+            </div>
           </div>
         </DialogBody>
         <DialogFooter>
