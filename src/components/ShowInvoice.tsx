@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Button,
   Dialog,
@@ -8,13 +8,52 @@ import {
 } from '@material-tailwind/react';
 import { useReactToPrint } from 'react-to-print';
 import './PrintableComponent.css';
+import { adminaxios } from '../axios/config';
+import toast from 'react-hot-toast';
 
 interface YourComponentProps {
   size: any | string | undefined; // Adjust the type for size
   handleOpen: (arg: any) => void; // Adjust the type for handleOpen if needed
+  id:number|undefined,
+  name:string|undefined,
+  clubName:string|undefined
+}
+interface InvoiceType {
+  Email: string;
+  Phone: string;
+  Total_candidates: number;
+  Kata_only_candidates_count: number;
+  Kumite_only_candidates_count: number;
+  Kumite_and_Kata_candidates_count: number;
+  Total_kata_only_entry_fee: number | null;
+  Total_kumite_only_entry_fee: number | null;
+  Total_Kata_Kumite_entry_fee: number | null;
+  Total_club_entry_fee: number;
 }
 
-const InvoiceModal: React.FC<YourComponentProps> = ({ size, handleOpen }) => {
+const InvoiceModal: React.FC<YourComponentProps> = ({ size, handleOpen,id,name,clubName }) => {
+  const [invoice, setInvoice] = useState<InvoiceType>()
+  useEffect(() => {
+    getInvoice();
+  }, [id]);
+
+  const getInvoice = async () => {
+    if(id){
+    try {
+      const { data }: any = await adminaxios.get(`/api/clubs/${id}/statistics`);
+      setInvoice(data);
+      if (data) {
+      }
+    } catch (error: any) {
+      console.error('Error fetchitn:', error);
+      toast.error(
+        'Error Occurred on fetching invoidata, try again.. !',
+        {
+          position: 'top-center',
+        },
+      );
+    }}
+  }
   const componentPDf = useRef<HTMLDivElement | null>(null);
   const containerStyle = {
     backgroundImage:
@@ -65,8 +104,8 @@ const InvoiceModal: React.FC<YourComponentProps> = ({ size, handleOpen }) => {
                     {/* To */}
                     <div className="text-sm text-white">
                       <div className="font-bold">To:</div>
-                      <div>JANE SMITH</div>
-                      <div>KENYU RYU CALICUT </div>
+                      <div>{name}</div>
+                      <div>{clubName} </div>
                     </div>
                   </div>
                   {/* Table */}
@@ -84,21 +123,21 @@ const InvoiceModal: React.FC<YourComponentProps> = ({ size, handleOpen }) => {
                     <tbody className="text-white">
                       <tr>
                         <td className="py-2 px-2 sm:px-4">KATA ONLY</td>
-                        <td className="py-2 px-2 sm:px-4">5</td>
+                        <td className="py-2 px-2 sm:px-4">{invoice?.Kata_only_candidates_count||0}</td>
                         <td className="py-2 px-2 sm:px-4">1000.00</td>
-                        <td className="py-2 px-2 sm:px-4">5000.00</td>
+                        <td className="py-2 px-2 sm:px-4">{invoice?.Total_kata_only_entry_fee||0}.00</td>
                       </tr>
                       <tr>
                         <td className="py-2 px-2 sm:px-4">KUMITE ONLY</td>
-                        <td className="py-2 px-2 sm:px-4">1</td>
+                        <td className="py-2 px-2 sm:px-4">{invoice?.Kumite_only_candidates_count||0}</td>
                         <td className="py-2 px-2 sm:px-4">1000.00</td>
-                        <td className="py-2 px-2 sm:px-4">1000.00</td>
+                        <td className="py-2 px-2 sm:px-4">{invoice?.Total_kumite_only_entry_fee||0}.00</td>
                       </tr>
                       <tr>
                         <td className="py-2 px-2 sm:px-4">KATA AND KUMITE</td>
-                        <td className="py-2 px-2 sm:px-4">1</td>
+                        <td className="py-2 px-2 sm:px-4">{invoice?.Kumite_and_Kata_candidates_count||0}</td>
                         <td className="py-2 px-2 sm:px-4">1500.00</td>
-                        <td className="py-2 px-2 sm:px-4">1500.00</td>
+                        <td className="py-2 px-2 sm:px-4">{invoice?.Total_Kata_Kumite_entry_fee||0}.00</td>  
                       </tr>
                     </tbody>
                     {/* Table Foot */}
@@ -107,7 +146,7 @@ const InvoiceModal: React.FC<YourComponentProps> = ({ size, handleOpen }) => {
                         <td className="py-2  px-2 sm:px-4" colSpan={3}>
                           Total
                         </td>
-                        <td className="py-2 px-2 sm:px-4">7500.00</td>
+                        <td className="py-2 px-2 sm:px-4">{invoice?.Total_club_entry_fee||0}.00</td>
                       </tr>
                     </tfoot>
                   </table>

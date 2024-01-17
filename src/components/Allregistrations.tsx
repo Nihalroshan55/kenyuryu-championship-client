@@ -1,6 +1,52 @@
+import { useEffect, useState } from 'react';
 import { IoPersonAddOutline } from 'react-icons/io5';
+import { adminaxios } from '../axios/config';
+import toast from 'react-hot-toast';
 
 const Allregistrations = () => {
+  const [allRegistration, setallRegistrations] = useState([]);
+  useEffect(() => {
+    getAllRegistrations();
+  }, []);
+
+  const getAllRegistrations = async () => {
+    try {
+      const { data }: any = await adminaxios.get(`/api/clubs/`);
+      setallRegistrations(data);
+      if (data) {
+      }
+    } catch (error: any) {
+      console.error('Error fetchitn:', error);
+      toast.error(
+        'Error Occurred on fetching all Registrations, try again.. !',
+        {
+          position: 'top-center',
+        },
+      );
+    }
+  };
+  const handleDelete = async (id: number) => {
+    const userConfirmed = window.confirm(
+      'Are you sure you want to delete this Club?',
+    );
+
+    if (userConfirmed) {
+      // Perform the actual delete action
+      try {
+        const { data }: any = await adminaxios.delete(`/api/clubs/${id}/`);
+        getAllRegistrations();
+        if (data) {
+          toast.success('Club Deleted Successfully', {
+            position: 'top-center',
+          });
+        }
+      } catch (error: any) {
+        toast.error('Error Occurred, try again.. !', {
+          position: 'top-center',
+        });
+      }
+    }
+  };
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
       <div className="max-w-full overflow-x-auto">
@@ -25,29 +71,30 @@ const Allregistrations = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                Sally Quinn
-              </td>
-              <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                Sally Quinn
-              </td>
+            {allRegistration.map((item: any, index) => (
+              <tr key={index}>
+                <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                  {item.name}
+                </td>
+                <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                  {item.coach_name}
+                </td>
 
-              <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                +91 8129028182
-              </td>
-              <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                54
-              </td>
-              <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-               <div className=' flex gap-5'>
-               <span className='bg-black border-strokedark  shadow-default  text-white p-2 rounded-lg'>Approve</span>
-               <span className='bg-black border-strokedark  shadow-default  text-red-600 p-2 rounded-lg'>Delete</span>
-               
-               
-                </div>
-              </td>
-            </tr>
+                <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                  +91 {item.phone}
+                </td>
+                <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                  {item.no_of_candidate}
+                </td>
+                <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                  <div className={`flex gap-5 ${item.id==1?'hidden':'flex'}`  }>
+                    <span onClick={()=>handleDelete(item.id)} className="bg-black border-strokedark cursor-pointer  shadow-default  text-red-600 p-2 rounded-lg">
+                      Delete
+                    </span>
+                  </div>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

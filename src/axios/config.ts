@@ -46,23 +46,35 @@ axiosInstance.interceptors.request.use(
 
 // Axios instance for admin
 export const adminaxios: AxiosInstance = axios.create({
-  baseURL: adminUrl,
+  baseURL: baseURL,
 });
 
 adminaxios.interceptors.request.use(
+ 
   (config: any) => {
-    const adminToken = localStorage.getItem('admin');
+    interface User {
+      access: string;
+      // Other properties in your user object
+    }
+    
+    const storedAdminString = localStorage.getItem('admin');
+    if(storedAdminString){
+      
+    const admin: User = JSON.parse(storedAdminString);
+    
+    
+    const userToken = admin?.access;
 
-    if (adminToken !== null) {
+    if (userToken !== null) {
       config.headers = {
         ...(config.headers || {}),
-        Authorization: `Bearer ${adminToken}`,
+        Authorization: `Bearer ${userToken}`,
       };
     } else {
       config.headers = {
         ...(config.headers || {}),
       };
-    }
+    }}
 
     return config;
   },

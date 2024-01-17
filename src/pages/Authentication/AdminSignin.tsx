@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import useColorMode from '../../hooks/useColorMode';
 import { axiosInstanceNoToken } from '../../axios/config';
+import toast from 'react-hot-toast';
 
 const AdminSignIn = () => {
   const [colorMode, setColorMode] = useColorMode();
@@ -14,31 +15,35 @@ const AdminSignIn = () => {
     }
   }, []);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    // event.preventDefault();
-    // console.log("workerdddd............");
+    event.preventDefault();
+   
   
-    // const form = event.target as HTMLFormElement;
-    // const password = form.elements.namedItem('password') as HTMLInputElement;
-    // const email = form.elements.namedItem('email') as HTMLInputElement;
+    const form = event.target as HTMLFormElement;
+    const password = form.elements.namedItem('password') as HTMLInputElement;
+    const email = form.elements.namedItem('email') as HTMLInputElement;
   
-    // try {
-    //   // Make a POST request using Axios
-    //   const { data }: any = await axiosInstanceNoToken.post(
-    //     '/api/clubs/login/',
-    //     { email: email.value, password: password.value }, // Use password.value instead of password
-    //   );
-    //   console.log(data, 'this is data.......');
+    try {
+      // Make a POST request using Axios
+      const { data }: any = await axiosInstanceNoToken.post(
+        '/api/clubs/login/',
+        { email: email.value, password: password.value }, // Use password.value instead of password
+      );
+      console.log(data, 'this is data.......');
   
-    //   if (data) {
-    //     console.log("success");
-    //     localStorage.setItem('user', JSON.stringify(data));
-    //     navigate('/home')
-    //   } else {
-    //     setinvalidPassword(true)
-    //   }
-    // } catch (error) {
-    //   console.error('Error submitting form:', error);
-    // }
+      if (data) {
+        console.log("success");
+        localStorage.setItem('admin', JSON.stringify(data));
+        navigate('/')
+      } else {
+        setinvalidPassword(true)
+      }
+    } catch (error:any) {
+      if(error?.response.status==401){
+        
+        setinvalidPassword(true)
+      }
+      console.error('Error submitting form:', error);
+    }
   };
   
   return (
@@ -58,7 +63,7 @@ const AdminSignIn = () => {
             <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
               {/* <span className="mb-1.5 block font-medium">Start for free</span> */}
               <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
-                 Admin Sign In 
+                 Admin Sign In 1
               </h2>
 
               <form onSubmit={handleSubmit}>

@@ -10,7 +10,8 @@ const DropdownUser = () => {
   const dropdown = useRef<any>(null);
   const navitgate=useNavigate()
   const storedUserData = localStorage.getItem('user');
-  const { name, coach_name } = storedUserData ? JSON.parse(storedUserData).user : {name:"",coach_name:""};
+  const storedAdminData = localStorage.getItem('admin');
+  const { name, coach_name } = storedUserData ? JSON.parse(storedUserData).user : storedAdminData? JSON.parse(storedAdminData).user:{name:"",coach_name:""} ;
   
 
   // close on click outside

@@ -80,7 +80,7 @@ const TableThree = ({ size }: any) => {
                 Kata
               </th>
               <th className="py-4 px-4 font-medium text-black dark:text-white">
-                Kumita
+                Kumite
               </th>
               <th className="py-4 px-4 font-medium text-black dark:text-white">
                 Options

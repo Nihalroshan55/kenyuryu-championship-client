@@ -5,6 +5,7 @@ import React, { useRef } from 'react';
 import DefaultLayoutUser from '../../layout/DefaultLayoutUser.tsx';
 import { FaDownload } from 'react-icons/fa';
 import { useReactToPrint } from 'react-to-print';
+import { PDFDownloadLink, Document, Page } from '@react-pdf/renderer'
 
 const ECommerce = () => {
   const [size, setSize] = React.useState(null);
@@ -13,7 +14,6 @@ const ECommerce = () => {
   const generatePDF = useReactToPrint({
     content: () => componentPDf.current,
     documentTitle: 'INVOICE',
-    onAfterPrint: () => alert('success'),
   });
   return (
     <>
@@ -48,6 +48,7 @@ const ECommerce = () => {
                 </span>
                 Download
               </div>
+              
               
             </div>
           </div>
