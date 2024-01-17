@@ -81,7 +81,7 @@ const AdminDashTable: React.FC<AdminDashTableProps>  = ({belt_color,gender,kata,
                   {candidate.weight}
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                  {candidate.club}
+                  {candidate.club.name}
                 </td>
               </tr>
             ))}
