@@ -80,7 +80,9 @@ const InvoiceModal: React.FC<YourComponentProps> = ({ size, handleOpen,id,name,c
           Invoice
         </DialogHeader>
         <DialogBody>
+          <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-boxdark dark:bg-boxdark">
+          
             <div ref={componentPDf} className="printable-content-invoice">
               <div
                 style={containerStyle}
@@ -157,6 +159,7 @@ const InvoiceModal: React.FC<YourComponentProps> = ({ size, handleOpen,id,name,c
                   </div>
                 </div>
               </div>
+            </div>
             </div>
           </div>
         </DialogBody>
