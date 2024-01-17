@@ -8,6 +8,7 @@ import '../../components/PrintableComponent.css';
 const AdminDashBoard = () => {
   const [kata, setkata] = useState(false);
   const [Kumite, setkumita] = useState(false);
+  const [fetch,setFetch]=useState(false);
   const selectBeltRef = useRef<HTMLSelectElement | null>(null);
   const ageCategoryRef = useRef<HTMLSelectElement | null>(null);
   const gendeRef = useRef<HTMLSelectElement | null>(null);
@@ -193,7 +194,9 @@ const AdminDashBoard = () => {
               </select>
             )}
 
-            <div className="inline-flex items-center justify-center gap-2.5 rounded-md bg-black py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10">
+            <div 
+            onClick={()=>setFetch(!fetch)} 
+            className="inline-flex items-center justify-center gap-2.5 rounded-md bg-black py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10">
               <span>
                 <FaSearch size={25} />
               </span>
@@ -218,7 +221,7 @@ const AdminDashBoard = () => {
               </th>
             </div>
 
-            <AdminDashTable />
+            <AdminDashTable  weight_category={selectedWeightCategory} age_category={selectedAgeCategory} fetch={fetch} belt_color={selectedBelt} gender={selectedGenderCategory} kata={kata}  kumite={Kumite}/>
           </div>
 
           <div className="  flex justify-center lg:justify-end gap-5  py-4 ">
