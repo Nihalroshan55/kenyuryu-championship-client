@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './PrintableComponentAdminDashTable.css';
 // import axios from 'axios';
 import { adminaxios } from '../axios/config';
@@ -16,9 +18,9 @@ const AdminDashTable: React.FC<AdminDashTableProps>  = ({belt_color,gender,kata,
 
   useEffect(() => {
     // Fetch candidates data from the API
-   
-
-    fetchData(); 
+    if (fetch) {
+      fetchData();
+    } 
   }, [fetch]); 
   const fetchData = async () => {
     try {
@@ -36,6 +38,10 @@ const AdminDashTable: React.FC<AdminDashTableProps>  = ({belt_color,gender,kata,
 
       
       setCandidates(response.data);
+      if (response.data.length === 0) {
+        toast.error('No candidates found.')
+        
+    }
     } catch (error) {
       console.error('Error fetching candidates:', error);
       
@@ -45,6 +51,9 @@ const AdminDashTable: React.FC<AdminDashTableProps>  = ({belt_color,gender,kata,
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
       <div className="max-w-full overflow-x-auto">
+      {candidates.length === 0 ? (
+          <p>No candidates found.</p>
+        ) : (
         <table className="w-full table-auto admindashboard-table">
           <thead>
             <tr className="bg-gray-2 text-left dark:bg-meta-4">
@@ -87,7 +96,9 @@ const AdminDashTable: React.FC<AdminDashTableProps>  = ({belt_color,gender,kata,
             ))}
           </tbody>
         </table>
+        )}
       </div>
+      <ToastContainer />
     </div>
   );
 };
