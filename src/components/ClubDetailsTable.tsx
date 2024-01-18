@@ -112,7 +112,7 @@ const ClubDetailsTable = () => {
                       setclubName(item.name);
                       handleOpen('md');
                     }}
-                    className="bg-black border-strokedark  shadow-default  text-white p-2 rounded-lg"
+                    className="bg-black border-strokedark cursor-pointer shadow-default  text-white p-2 rounded-lg"
                   >
                     Open Invoice
                   </span>
