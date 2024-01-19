@@ -74,6 +74,9 @@ const TableThree = ({ size }: any) => {
                 Weight
               </th>
               <th className="py-4 px-4 font-medium text-black dark:text-white">
+                Belt Category
+              </th>
+              <th className="py-4 px-4 font-medium text-black dark:text-white">
                 Belt
               </th>
               <th className="py-4 px-4 font-medium text-black dark:text-white">
@@ -111,6 +114,8 @@ const TableThree = ({ size }: any) => {
               </td>
               <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                 {item.belt_color}
+              </td><td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                {item.colours}
               </td>
               <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                {item.kata?<IoCheckmarkDoneSharp size={25} />:<MdOutlineNotInterested size={25} />} 

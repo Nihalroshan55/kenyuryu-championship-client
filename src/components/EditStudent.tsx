@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import {
   Button,
   Dialog,
@@ -20,7 +20,8 @@ interface User {
   category: string;
   weight_category: string;
   entry_fee: number;
-  club: number;
+  club?: number;
+  colours:string
 }
 interface YourComponentProps {
   size: any | string | undefined; // Adjust the type for size
@@ -77,10 +78,13 @@ const EditStudent: React.FC<YourComponentProps> = ({
     const belt_color = form.elements.namedItem(
       'belt_color',
     ) as HTMLInputElement;
+    const belt = form.elements.namedItem(
+      'belt',
+    ) as HTMLInputElement;
     const age = form.elements.namedItem('age') as HTMLInputElement;
     if(!kata&&!kumita){
       alert("please Select Atleast one Event")
-    }else if(!gender.value||!name.value||!weight||!belt_color.value||!age.value){
+    }else if(!gender.value||!name.value||!weight||!belt_color.value||!age.value||(belt_color.value=="Colour Belt"&&!belt.value)){
       alert("please Fill All Input Fields")
     }else{
     try {
@@ -95,7 +99,8 @@ const EditStudent: React.FC<YourComponentProps> = ({
           age: age.value,
           kata: kata,
           kumite: kumita,
-        }, // Use password.value instead of password
+          colours:belt_color.value=="Colour Belt"?belt.value:"Black"
+        }, 
       );
 
       if (data) {
@@ -111,6 +116,16 @@ const EditStudent: React.FC<YourComponentProps> = ({
     // Access the form using the ref and submit it
     formRef?.current?.dispatchEvent(new Event('submit', { bubbles: true }));
   };
+  const handleSelectChange = (
+    event: ChangeEvent<HTMLSelectElement>,
+    field: keyof User // Specify that field should be a key of User
+  ) => {
+    setuser((prevUser) => ({
+      ...(prevUser as User),
+      [field]: event.target.value, // Use computed property to set the field dynamically
+    }));
+  };
+
 
 
   return (
@@ -122,7 +137,7 @@ const EditStudent: React.FC<YourComponentProps> = ({
         className="border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark"
       >
         <DialogHeader className="text-black dark:text-white">
-          Add Player
+          Edit Player
         </DialogHeader>
         <DialogBody>
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -170,6 +185,8 @@ const EditStudent: React.FC<YourComponentProps> = ({
                     required
                       name="gender"
                       value={`${user?.gender}`}
+                      onChange={(e)=>handleSelectChange(e,"gender")}
+
                       className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                     >
                       <option disabled value="">
@@ -188,6 +205,7 @@ const EditStudent: React.FC<YourComponentProps> = ({
                     required
                       name="belt_color"
                       value={user?.belt_color || ''}
+                      onChange={(e)=>handleSelectChange(e,"belt_color")}
 
                       className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                     >
@@ -214,7 +232,7 @@ const EditStudent: React.FC<YourComponentProps> = ({
                     />
                     <CheckboxTwo
                       key={2}
-                      value={'Kumita'}
+                      value={'Kumite'}
                       setIsChecked={setkumita}
                       isChecked={kumita}
                     />
@@ -238,6 +256,31 @@ const EditStudent: React.FC<YourComponentProps> = ({
                     </>
                   </div>
                 </div>
+               {user?.belt_color=="Colour Belt"&&<div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
+                    <div className="w-full xl:w-1/2">
+                      <label className="mb-2.5 block text-black dark:text-white">
+                        Belt 
+                      </label>
+                      <select
+                        required
+                        name="belt"
+                        value={user?.colours || ''}
+                        onChange={(e)=>handleSelectChange(e,"colours")}
+                        className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                      >
+                        <option disabled selected value="">
+                          Select Belt
+                        </option>
+                        <option value="White">White</option>
+                        <option value="Yellow">Yellow</option>
+                        <option value="Orange">Orange</option>
+                        <option value="Green">Green</option>
+                        <option value="Blue">Blue</option>
+                        <option value="Purple">Purple</option>
+                        <option value="Brown">Brown</option>
+                      </select>
+                    </div>
+                  </div>}
               </div>
             </form>
             </div>

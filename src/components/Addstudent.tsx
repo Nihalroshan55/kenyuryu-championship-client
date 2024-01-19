@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { ChangeEvent, useRef, useState } from 'react';
 import {
   Button,
   Dialog,
@@ -20,7 +20,7 @@ const AddStudent: React.FC<YourComponentProps> = ({ size, handleOpen }) => {
   const [kata, setkata] = useState(false);
   const [kumita, setkumita] = useState(false);
   const [invalidPassword, setinvalidPassword] = useState(false);
-
+  const [selectedValue, setSelectedValue] = useState<string>('');
   const formRef = useRef<HTMLFormElement | null>(null);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -33,6 +33,7 @@ const AddStudent: React.FC<YourComponentProps> = ({ size, handleOpen }) => {
     const belt_color = form.elements.namedItem(
       'belt_color',
     ) as HTMLInputElement;
+    const belt = form.elements.namedItem('belt') as HTMLInputElement;
     const age = form.elements.namedItem('age') as HTMLInputElement;
     const { id } = JSON.parse(localStorage.getItem('user') as string).user;
     if (!kata && !kumita) {
@@ -42,7 +43,8 @@ const AddStudent: React.FC<YourComponentProps> = ({ size, handleOpen }) => {
       !name.value ||
       !weight ||
       !belt_color.value ||
-      !age.value
+      !age.value ||
+      (belt_color.value=="Colour Belt"&&!belt.value)
     ) {
       alert('please Fill All Input Fields');
     } else {
@@ -61,6 +63,8 @@ const AddStudent: React.FC<YourComponentProps> = ({ size, handleOpen }) => {
               age: age.value,
               kata: kata,
               kumite: kumita,
+              colours:belt_color.value=="Colour Belt"?belt.value:"Black"
+
             }, // Use password.value instead of password
           );
 
@@ -80,7 +84,10 @@ const AddStudent: React.FC<YourComponentProps> = ({ size, handleOpen }) => {
     // Access the form using the ref and submit it
     formRef?.current?.dispatchEvent(new Event('submit', { bubbles: true }));
   };
-
+  const handleSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    // Update the state with the selected value
+    setSelectedValue(event.target.value);
+  };
   return (
     <>
       <Dialog
@@ -148,11 +155,12 @@ const AddStudent: React.FC<YourComponentProps> = ({ size, handleOpen }) => {
 
                     <div className="w-full xl:w-1/2">
                       <label className="mb-2.5 block text-black dark:text-white">
-                        Belt
+                        Belt Category
                       </label>
                       <select
                         required
                         name="belt_color"
+                        onChange={handleSelectChange}
                         className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                       >
                         <option disabled selected value="">
@@ -178,7 +186,7 @@ const AddStudent: React.FC<YourComponentProps> = ({ size, handleOpen }) => {
                         />
                         <CheckboxTwo
                           key={2}
-                          value={'Kumita'}
+                          value={'Kumite'}
                           setIsChecked={setkumita}
                           isChecked={kumita}
                         />
@@ -201,6 +209,30 @@ const AddStudent: React.FC<YourComponentProps> = ({ size, handleOpen }) => {
                       </>
                     </div>
                   </div>
+
+                  {selectedValue=="Colour Belt"&&<div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
+                    <div className="w-full xl:w-1/2">
+                      <label className="mb-2.5 block text-black dark:text-white">
+                        Belt
+                      </label>
+                      <select
+                        required
+                        name="belt"
+                        className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                      >
+                        <option disabled selected value="">
+                          Select Belt
+                        </option>
+                        <option value="White">White</option>
+                        <option value="Yellow">Yellow</option>
+                        <option value="Orange">Orange</option>
+                        <option value="Green">Green</option>
+                        <option value="Blue">Blue</option>
+                        <option value="Purple">Purple</option>
+                        <option value="Brown">Brown</option>
+                      </select>
+                    </div>
+                  </div>}
                 </div>
               </form>
             </div>

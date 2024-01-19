@@ -32,7 +32,7 @@ const AdminDashTable: React.FC<AdminDashTableProps>  = ({belt_color,gender,kata,
           kata: kata?"True":"False", 
           kumite:kumite?"True":"False",
           weight_category:kumite? weight_category:null, 
-          age_category:age_category
+          category:age_category
         },
       });
 
@@ -69,9 +69,13 @@ const AdminDashTable: React.FC<AdminDashTableProps>  = ({belt_color,gender,kata,
               <th className="py-4 px-4 font-medium text-black dark:text-white">
                 Weight
               </th>
+              <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
+                Belt
+              </th>
               <th className="py-4 px-4 font-medium text-black dark:text-white">
                 Club
               </th>
+              
             </tr>
           </thead>
           <tbody className="admindashboard-table-tr">
@@ -88,6 +92,9 @@ const AdminDashTable: React.FC<AdminDashTableProps>  = ({belt_color,gender,kata,
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   {candidate.weight}
+                </td>
+                <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                  {candidate.colours}
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   {candidate.club.name}

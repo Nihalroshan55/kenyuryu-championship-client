@@ -38,7 +38,7 @@ const AdminSignIn = () => {
         setinvalidPassword(true)
       }
     } catch (error:any) {
-      if(error?.response.status==500){
+      if(error?.response.status==500||401){
         
         setinvalidPassword(true)
       }
