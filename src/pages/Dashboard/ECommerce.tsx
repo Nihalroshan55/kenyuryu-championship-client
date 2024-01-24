@@ -50,7 +50,7 @@ const ECommerce = () => {
                 Add Student
               </div>
               <div
-                onClick={generatePDFS}
+                onClick={generatesPDF}
                 className="inline-flex items-center  justify-center gap-2.5 rounded-md bg-black py-2 px-3 md:py-4 md:px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
               >
                 <span>

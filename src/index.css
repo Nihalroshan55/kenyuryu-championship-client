@@ -188,6 +188,14 @@ span.flatpickr-weekday,
     color: black;
    
   }
+
+  .lastone{
+    overflow: visible;
+    height: fit-content;
+  }
+  .forhideelement{
+    display:none;
+  }
 }
 
 
