@@ -3,10 +3,41 @@ import InvoiceModal from './ShowInvoice';
 import SwitcherFour from './SwitcherFour';
 import { adminaxios } from '../axios/config';
 import toast from 'react-hot-toast';
+import ClubCandidatesModal from './ClubCandidates';
+interface Candidate {
+  id: number;
+  name: string;
+  age: number;
+  gender: string;
+  belt_color: string;
+  weight: number;
+  kata: boolean;
+  kumite: boolean;
+  category: string;
+  weight_category: string;
+  entry_fee: number;
+  colours: string;
+  club: number;
+}
+
+interface ClubData {
+  email: string;
+  coach_name: string;
+  name: string;
+  phone: number;
+  fees: number;
+  id: number;
+  is_paid: boolean;
+  no_of_candidate: number;
+  candidates: Candidate[];
+}
 
 const ClubDetailsTable = () => {
+  const [ClubData, setClubData] = useState()
   const [size, setSize] = React.useState(null);
+  const [size4CanditesTable, setsize4CanditesTable] = React.useState(null);
   const handleOpen = (value: any) => setSize(value);
+  const handleOpenCandidateTable = (value: any) => setsize4CanditesTable(value);
   const [allRegistration, setallRegistrations] = useState([]);
   const [id, setId] = useState();
   const [name, setname] = useState();
@@ -69,6 +100,9 @@ const ClubDetailsTable = () => {
               <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
                 Phone
               </th>
+              <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
+                Candidates
+              </th>
               <th className="py-4 px-4 font-medium text-black dark:text-white">
                 Total Players
               </th>
@@ -95,6 +129,17 @@ const ClubDetailsTable = () => {
 
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   +91 {item.phone}
+                </td>
+                <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                  <span
+                    onClick={() => {
+                      setClubData(item)
+                      handleOpenCandidateTable('lg');
+                    }}
+                    className="bg-black border-strokedark  shadow-default  text-white p-2 rounded-lg"
+                  >
+                    Open Candidates List
+                  </span>
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   {item.no_of_candidate}
@@ -135,6 +180,9 @@ const ClubDetailsTable = () => {
         key={1}
         handleOpen={handleOpen}
       />
+
+<ClubCandidatesModal ClubData={ClubData as unknown as ClubData} handleOpen={handleOpenCandidateTable}  size={size4CanditesTable} />
+
     </div>
   );
 };
