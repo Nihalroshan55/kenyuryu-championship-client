@@ -51,7 +51,7 @@ const ClubCandidatesModal: React.FC<YourComponentProps> = ({
   handleOpen,
   ClubData,
 }) => {
-  
+
 
   const componentPDf = useRef<HTMLDivElement | null>(null);
   const containerStyle = {
@@ -65,7 +65,7 @@ const ClubCandidatesModal: React.FC<YourComponentProps> = ({
   const generatePDF = useReactToPrint({
     content: () => componentPDf.current,
     documentTitle: 'INVOICE',
-    
+
   });
   return (
     <>
@@ -97,6 +97,11 @@ const ClubCandidatesModal: React.FC<YourComponentProps> = ({
 
                     {/* Table */}
                     <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+                      <div className="text-center mb-4">
+                        <h3 className="text-lg font-semibold text-black dark:text-white">
+                          {ClubData?.name}
+                        </h3>
+                      </div>
                       <div className="max-w-full overflow-x-auto ">
                         <table className=" w-full table-auto ">
                           <thead>
@@ -120,7 +125,7 @@ const ClubCandidatesModal: React.FC<YourComponentProps> = ({
                               <th className="py-4 px-4 font-medium text-black dark:text-white">
                                 Weight Category
                               </th>
-                            </tr>
+                            </tr> 
                           </thead>
                           <tbody>
                             {ClubData?.candidates?.length != 0 ? (
