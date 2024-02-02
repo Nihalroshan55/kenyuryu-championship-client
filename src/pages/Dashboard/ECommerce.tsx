@@ -21,7 +21,7 @@ const ECommerce = () => {
 
 
   const isPaid = async () => {
-    const userString = localStorage.getItem('user');
+    const userString:any = localStorage.getItem('user');
 const user = JSON.parse(userString);
 const id =user.user.id;
 console.log(user.user.id);
@@ -41,7 +41,10 @@ console.log(user.user.id);
     
     }
   }
-   useEffect(() =>isPaid,[])
+  
+  useEffect(() => {
+    isPaid();
+  }, []);
    useEffect(()=>console.log(paid,'dsfdfcfcx'),[paid])
   const generatePDFS = () => {
     setpdf(!pdf);
