@@ -1,14 +1,16 @@
 import TableThree from '../../components/TableThree.tsx';
 import { IoPersonAddOutline } from 'react-icons/io5';
 import AddStudent from '../../components/Addstudent.tsx';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import DefaultLayoutUser from '../../layout/DefaultLayoutUser.tsx';
 import { FaDownload } from 'react-icons/fa';
 import { useReactToPrint } from 'react-to-print';
 import generatePDF from 'react-to-pdf';
+import { axiosInstance } from '../../axios/config.ts';
 
 const ECommerce = () => {
   const [size, setSize] = React.useState(null);
+  const [paid, setPaid] = useState(true)
   const handleOpen = (value: any) => setSize(value);
   const componentPDf = useRef<HTMLTableElement | null>(null);
   const [pdf, setpdf] = useState(false);
@@ -16,6 +18,31 @@ const ECommerce = () => {
     content: () => componentPDf.current,
     documentTitle: 'INVOICE',
   });
+
+
+  const isPaid = async () => {
+    const userString = localStorage.getItem('user');
+const user = JSON.parse(userString);
+const id =user.user.id;
+console.log(user.user.id);
+    
+    try {
+      // Make a POST request using Axios
+      const { data }: any = await axiosInstance.get(
+        `/api/clubs/${id}`);
+  
+      if (data) {
+        console.log('jhdhsddscd');
+        setPaid(data.is_paid)
+        console.log(data,'hfggfgvbgbvbvv')
+      } 
+    } catch (error:any) {
+      console.error('Error submitting form:', error);
+    
+    }
+  }
+   useEffect(() =>isPaid,[])
+   useEffect(()=>console.log(paid,'dsfdfcfcx'),[paid])
   const generatePDFS = () => {
     setpdf(!pdf);
     setTimeout(() => {
@@ -40,6 +67,7 @@ const ECommerce = () => {
               <TableThree pdf={pdf} size={size} />
             </div>
             <div className=" border-stroke flex gap-3 justify-end py-4 dark:border-strokedark cursor-pointer">
+            {!paid?(
               <div
                 onClick={() => handleOpen('lg')}
                 className="inline-flex items-center  justify-center gap-2.5 rounded-md bg-black py-2 px-3 md:py-4 md:px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
@@ -48,7 +76,7 @@ const ECommerce = () => {
                   <IoPersonAddOutline size={25} />
                 </span>
                 Add Student
-              </div>
+              </div>):null}
               <div
                 onClick={generatesPDF}
                 className="inline-flex items-center  justify-center gap-2.5 rounded-md bg-black py-2 px-3 md:py-4 md:px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"

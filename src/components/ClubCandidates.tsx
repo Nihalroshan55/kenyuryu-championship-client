@@ -125,7 +125,7 @@ const ClubCandidatesModal: React.FC<YourComponentProps> = ({
                               <th className="py-4 px-4 font-medium text-black dark:text-white">
                                 Weight Category
                               </th>
-                            </tr>
+                            </tr> 
                           </thead>
                           <tbody>
                             {ClubData?.candidates?.length != 0 ? (
