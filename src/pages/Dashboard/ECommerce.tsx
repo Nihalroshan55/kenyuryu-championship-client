@@ -41,10 +41,7 @@ console.log(user.user.id);
     
     }
   }
-  
-  useEffect(() => {
-    isPaid();
-  }, []);
+   useEffect(() =>isPaid,[])
    useEffect(()=>console.log(paid,'dsfdfcfcx'),[paid])
   const generatePDFS = () => {
     setpdf(!pdf);
