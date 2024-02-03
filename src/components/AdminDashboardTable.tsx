@@ -23,17 +23,28 @@ const AdminDashTable: React.FC<AdminDashTableProps>  = ({belt_color,gender,kata,
     } 
   }, [fetch]); 
   const fetchData = async () => {
+
+    let params= {
+        
+      gender: gender=="Male"?"M":gender=="Female"?"F":"N", 
+      belt_color: belt_color, 
+      kata: kata?"True":"False", 
+      kumite:kumite?"True":"False",
+      weight_category:kumite? weight_category:null, 
+      category:age_category
+    }
+    if (kata && !kumite) {
+      const { kumite, ...updatedParams } = params;
+      params = updatedParams as typeof params;
+    }
+    if (kumite && !kata) {
+      const { kata, ...updatedParams } = params;
+      params = updatedParams as typeof params;
+    }
     try {
       const response = await adminaxios.get('/api/candidates/filters', {
-        params: {
-        
-          gender: gender=="Male"?"M":gender=="Female"?"F":"N", 
-          belt_color: belt_color, 
-          kata: kata?"True":"False", 
-          kumite:kumite?"True":"False",
-          weight_category:kumite? weight_category:null, 
-          category:age_category
-        },
+      
+        params: params
       });
 
       
