@@ -10,10 +10,19 @@ interface AdminDashTableProps {
   kata: boolean;
   kumite: boolean;
   weight_category: string;
-  age_category:string;
+  age_category?:string ;
+  category?:string
   fetch:boolean;
 }
-const AdminDashTable: React.FC<AdminDashTableProps>  = ({belt_color,gender,kata,kumite,weight_category,age_category,fetch}) => {
+type Params = {
+  gender?: string;
+  belt_color?: string;
+  kata?: string;
+  kumite?: string;
+  weight_category?: string | null;
+  category: string;
+};
+const AdminDashTable: React.FC<AdminDashTableProps>  = ({belt_color,gender,kata,kumite,weight_category,age_category,fetch=true}) => {
   const [candidates, setCandidates] = useState([]);
 
   useEffect(() => {
@@ -24,15 +33,41 @@ const AdminDashTable: React.FC<AdminDashTableProps>  = ({belt_color,gender,kata,
   }, [fetch]); 
   const fetchData = async () => {
 
-    let params= {
-        
-      gender: gender=="Male"?"M":gender=="Female"?"F":"N", 
-      belt_color: belt_color, 
-      kata: kata?"True":"False", 
-      kumite:kumite?"True":"False",
-      weight_category:kumite? weight_category:null, 
-      category:age_category
+    // let params= {
+
+    //   gender: gender=="Male"?"M":gender=="Female"?"F":"N", 
+    //   belt_color: belt_color, 
+    //   kata: kata?"True":"False", 
+    //   kumite:kumite?"True":"False",
+    //   weight_category:kumite? weight_category:null, 
+    //   category:age_category
+    // }
+
+    
+    let params: Partial<Params> = {};
+    if(gender=="Male"){
+      params.gender ='M';
+    }else if(gender=='Female'){
+      params.gender='F';
+    }if (belt_color){
+      params.belt_color=belt_color
+    }if(kata){
+      if (kumite){
+        params.kata="True"
+        params.kumite="True"
+      }else{
+        params.kata="True"
+        params.kumite="False"
+      }
+    }if (kumite){
+      params.kumite="True"  
+    }if (weight_category){
+      params.weight_category=weight_category
     }
+    if (age_category){
+      params.category=age_category
+    }
+
     if (kata && !kumite) {
       const { kumite, ...updatedParams } = params;
       params = updatedParams as typeof params;
@@ -69,6 +104,9 @@ const AdminDashTable: React.FC<AdminDashTableProps>  = ({belt_color,gender,kata,
           <thead>
             <tr className="bg-gray-2 text-left dark:bg-meta-4">
               <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
+                Sl
+              </th>
+              <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
                 Name
               </th>
               <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
@@ -92,6 +130,9 @@ const AdminDashTable: React.FC<AdminDashTableProps>  = ({belt_color,gender,kata,
           <tbody className="admindashboard-table-tr">
             {candidates.map((candidate:any, index) => (
               <tr key={index}>
+                <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                  {index+1}
+                </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   {candidate.name}
                 </td>

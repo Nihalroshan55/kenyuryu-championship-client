@@ -14,6 +14,7 @@ import AllregistrationsPage from './pages/Dashboard/Allregistration';
 import ProtectedRoute from './pages/Authentication/ProtectedRoute';
 import AdminProtectedRoute from './pages/Authentication/AdminProtectedRoute';
 import AdminSignIn from './pages/Authentication/AdminSignin';
+import AllCandidateDetails from './components/AllCandidateDetails';
 
 const DefaultLayout = lazy(() => import('./layout/DefaultLayout'));
 
@@ -60,6 +61,7 @@ function App() {
 
           <Route path="/allregistrations" element={<AdminProtectedRoute><AllregistrationsPage /></AdminProtectedRoute>} />
           <Route path="/clubdetails" element={<AdminProtectedRoute><ClubDetails /></AdminProtectedRoute>} />
+          <Route path="/allcandidatedetails" element={<AdminProtectedRoute><AllCandidateDetails/></AdminProtectedRoute>} />
           {routes.map((routes, index) => {
             const { path, component: Component } = routes;
             return (

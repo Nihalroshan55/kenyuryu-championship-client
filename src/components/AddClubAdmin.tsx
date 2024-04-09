@@ -1,0 +1,293 @@
+import React, { ChangeEvent, useRef, useState } from 'react';
+import {
+  Button,
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+} from '@material-tailwind/react';
+import CheckboxTwo from './CheckboxTwo';
+import { axiosInstance } from '../axios/config';
+import toast from 'react-hot-toast';
+
+interface YourComponentProps {
+  size: any | string | undefined; // Adjust the type for size
+  handleOpen: (arg: any) => void; // Adjust the type for handleOpen if needed
+  getAllRegistrations:any;
+}
+
+const AddClubAdmin: React.FC<YourComponentProps> = ({ size,getAllRegistrations, handleOpen }) => {
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const [kata, setkata] = useState(false);
+  const [kumita, setkumita] = useState(false);
+  const [invalidPassword, setinvalidPassword] = useState(false);
+  const [selectedValue, setSelectedValue] = useState<string>('');
+  const formRef = useRef<HTMLFormElement | null>(null);
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const form = event.target as HTMLFormElement;
+    const gender = form.elements.namedItem('gender') as HTMLInputElement;
+    const name = form.elements.namedItem('name') as HTMLInputElement;
+    const club = form.elements.namedItem('club') as HTMLInputElement;
+    const weightElement = form.elements.namedItem('weight') as HTMLInputElement;
+    const weight = weightElement.value;
+    const belt_color = form.elements.namedItem(
+      'belt_color',
+    ) as HTMLInputElement;
+    const belt = form.elements.namedItem('belt') as HTMLInputElement;
+    const age = form.elements.namedItem('age') as HTMLInputElement;
+    // const { id } = JSON.parse(localStorage.getItem('user') as string).user;
+    if (!kata && !kumita) {
+      alert('please Select Atleast one Event');
+    } else if (
+      !gender.value ||
+      !name.value ||
+      !club.value ||
+      !weight ||
+      !belt_color.value ||
+      !age.value ||
+      (belt_color.value == "Colour Belt" && !belt.value)
+    ) {
+      alert('please Fill All Input Fields');
+    } else {
+      if (buttonRef.current && !buttonRef.current.disabled) {
+        buttonRef.current.disabled = true;
+        try {
+          // Make a POST request using Axios
+          const { data }: any = await axiosInstance.post(
+            '/api/candidates/',
+            {
+              name: name.value,
+              club: club.value,
+              gender: gender.value,
+              weight: weight,
+              belt_color: belt_color.value,
+              age: age.value,
+              kata: kata,
+              kumite: kumita,
+              colours: belt_color.value == "Colour Belt" ? belt.value : "Black"
+
+            }, // Use password.value instead of password
+          );
+
+          if (data) {
+            handleOpen(null);
+            getAllRegistrations();
+          }
+        } catch (error: any) {
+          console.error('Error submitting form:', error);
+          setinvalidPassword(true);
+        }
+      }
+    }
+  };
+
+  const handleSubmitButton = (event: React.MouseEvent) => {
+    event.preventDefault(); // Prevent the default form submission behavior
+    // Access the form using the ref and submit it
+    formRef?.current?.dispatchEvent(new Event('submit', { bubbles: true }));
+  };
+  const handleSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    // Update the state with the selected value
+    setSelectedValue(event.target.value);
+  };
+  return (
+    <>
+      <Dialog
+        open={['xs', 'sm', 'md', 'lg', 'xl', 'xxl'].includes(size as string)}
+        size={size || 'lg'}
+        handler={handleOpen}
+        className="border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark"
+      >
+        <DialogHeader className="text-black dark:text-white">
+          Add Player
+        </DialogHeader>
+
+        <DialogBody>
+          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+            <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
+              <form ref={formRef} onSubmit={handleSubmit}>
+                <div className="p-6.5">
+                  <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
+                    <div className="w-full xl:w-1/2">
+                      <label className="mb-2.5 block text-black dark:text-white">
+                        Name
+                      </label>
+                      <input
+                        required
+                        type="text"
+                        name="name"
+                        minLength={3}
+                        placeholder="Enter club name"
+                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                      />
+                    </div>
+
+
+
+
+                    {/* <div className="w-full xl:w-1/2">
+                      <label className="mb-2.5 block text-black dark:text-white">
+                        Club
+                      </label>
+                      <select
+                        required
+                        name="club"
+                        className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                        defaultValue="" // or value=""
+                      >
+                        <option disabled value="">
+                          Select Club
+                        </option>
+                        {Array.isArray(allClubs) &&
+                          allClubs.map((club: any, index) => (
+                            <option key={index} value={club.id}>
+                              {club.name}
+                            </option>
+                          ))}
+                      </select>
+                    </div> */}
+
+
+                    <div className="w-full xl:w-1/2">
+                      <label className="mb-2.5 block text-black dark:text-white">
+                        Email
+                      </label>
+                      <input
+                        required
+                        type="email"
+                        min={7}
+                        max={100}
+                        name="age"
+                        placeholder="Enter club email"
+                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                      />
+                    </div>
+
+
+                  </div>
+                  {/* <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
+                    <div className="w-full xl:w-1/2">
+                      <label className="mb-2.5 block text-black dark:text-white">
+                        Coach Name
+                      </label>
+                      <select
+                        required
+                        name="coach_name"
+                        className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                      >
+                        <option disabled value="">
+                          Select Gender
+                        </option>
+                        <option value="M">Male</option>
+                        <option value="F">Female</option>
+                      </select>
+                    </div>
+
+                  </div> */}
+
+                  {/* <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
+                    <div className="w-full xl:w-1/2">
+                      <label className="mb-2.5 block text-black dark:text-white">
+                        Belt Category
+                      </label>
+                      <select
+                        required
+                        name="belt_color"
+                        onChange={handleSelectChange}
+                        className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                      >
+                        <option disabled selected value="">
+                          Select Belt
+                        </option>
+                        <option value="Black Belt">black</option>
+                        <option value="Colour Belt">colour</option>
+                      </select>
+                    </div>
+                    <div className="w-full xl:w-1/2">
+                      <label className="mb-2.5 block text-black dark:text-white">
+                        Events
+                      </label>
+                      <div className="w-full flex justify-center gap-15 rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
+                        <CheckboxTwo
+                          key={1}
+                          value={'Kata'}
+                          setIsChecked={setkata}
+                          isChecked={kata}
+                        />
+                        <CheckboxTwo
+                          key={2}
+                          value={'Kumite'}
+                          setIsChecked={setkumita}
+                          isChecked={kumita}
+                        />
+                      </div>
+                    </div>
+                  </div> */}
+                        <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
+                    <div className="w-full xl:w-1/2">
+                      <>
+                        <label className="mb-2.5 block text-black dark:text-white">
+                        Coach Name
+                        </label>
+                        <input
+                          required
+                          name="coach_name"
+                          type="text"
+                          min={5}
+                          max={200}
+                          placeholder="Enter Player weight"
+                          className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                        />
+                      </>
+                    </div>
+                    <div className="w-full xl:w-1/2">
+                      <>
+                        <label className="mb-2.5 block text-black dark:text-white">
+                        Phone
+                        </label>
+                        <input
+                          required
+                          name="phone"
+                          type="phone"
+                          min={5}
+                          max={200}
+                          placeholder="Enter Player weight"
+                          className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                        />
+                      </>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </DialogBody>
+        <DialogFooter>
+          {invalidPassword && (
+            <p className="text-red-700 ">You Are Entered invalid Details</p>
+          )}
+          <Button
+            variant="text"
+            color="red"
+            onClick={() => handleOpen(null)}
+            className="mr-1"
+          >
+            <span>Cancel</span>
+          </Button>
+          <Button
+            ref={buttonRef}
+            variant="gradient"
+            color="green"
+            onClick={handleSubmitButton}
+          >
+            <span>Confirm</span>
+          </Button>
+        </DialogFooter>
+      </Dialog>
+    </>
+  );
+};
+
+export default AddClubAdmin;

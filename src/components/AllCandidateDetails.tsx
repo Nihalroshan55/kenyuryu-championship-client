@@ -6,14 +6,36 @@ import React, { useEffect, useState } from 'react';
 import { axiosInstance } from '../axios/config';
 import toast from 'react-hot-toast';
 import EditStudent from './EditStudent';
+import AddStudentAdmin from './AddStudentAdmin';
 
-const TableThree = ({ size,pdf }: any) => {
+const AllCandidateDetails = ({ size,pdf }: any) => {
   const [sizes, setSize] = React.useState(null);
+  const [addSize, setAddSize] = React.useState(null);
   const [editId, seteditId] = useState()
   const handleOpen = (value: any) => setSize(value);
-  const { id } = JSON.parse(localStorage.getItem('user') as string).user;
+  const handleAddOpen = (value: any) => {
+    setAddSize(value);
+    fetchClub();
 
+  }
+  const fetchClub = async () => {
+    try {
+      console.log("innnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn")
+      const  {data} : any = await axiosInstance.get(
+        "/api/clubs/",
+      );
+      // setAllPlayers(clubs);
+      console.log(data) 
+      setAllClubs(data)
+      
+    } catch (error: any) {
+      console.error('Error fetchitn:', error);
+    }
+  };
+  // const { id } = JSON.parse(localStorage.getItem('user') as string).user;
+  // const id=2
   const [AllPlayers, setAllPlayers] = useState([]);
+  const [allClubs, setAllClubs] = useState<any>([]);
   useEffect(() => {
     fetchPlayers();
   }, [size,sizes]);
@@ -21,7 +43,7 @@ const TableThree = ({ size,pdf }: any) => {
   const fetchPlayers = async () => {
     try {
       const { data }: any = await axiosInstance.get(
-        `/api/candidates/club_candidates/?club=${id}`,
+        "/api/candidates/",
       );
       setAllPlayers(data);
       if (data) {
@@ -58,6 +80,7 @@ const TableThree = ({ size,pdf }: any) => {
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
       <div className="max-w-full overflow-x-auto lastone">
+      <div className='float-right bg-gray-2  dark:bg-meta-4 mb-5 rounded-lg'> <button onClick={() => handleAddOpen('lg')} className='w-20 p-2'>ADD</button> </div>
         <table className=" w-full table-auto lastone">
           <thead >
             <tr className="bg-gray-2 text-left dark:bg-meta-4">
@@ -66,6 +89,9 @@ const TableThree = ({ size,pdf }: any) => {
               </th>
               <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
                 Name
+              </th>
+              <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
+              Chase No
               </th>
               <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
                 Age
@@ -81,6 +107,9 @@ const TableThree = ({ size,pdf }: any) => {
               </th>
               <th className="py-4 px-4 font-medium text-black dark:text-white">
                 Belt
+              </th>
+              <th className="py-4 px-4 font-medium text-black dark:text-white">
+                Club
               </th>
               <th className="py-4 px-4 font-medium text-black dark:text-white">
                 Kata
@@ -109,6 +138,9 @@ const TableThree = ({ size,pdf }: any) => {
                 {item.name}
               </td>
               <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                {item.chase_no}
+              </td>
+              <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                 {item.age}
               </td>
 
@@ -120,8 +152,12 @@ const TableThree = ({ size,pdf }: any) => {
               </td>
               <td className={`${pdf?"hidden":""} border-b border-[#eee] py-5 px-4 dark:border-strokedark forhideelement`}>
                 {item.belt_color}
-              </td><td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+              </td>
+              <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                 {item.colours}
+              </td>
+              <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                {item.club.name}
               </td>
               <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                {item.kata?<IoCheckmarkDoneSharp size={25} />:<MdOutlineNotInterested size={25} />} 
@@ -152,8 +188,10 @@ const TableThree = ({ size,pdf }: any) => {
         </table>
       </div>
       <EditStudent id={editId} size={sizes} handleOpen={handleOpen} />
+      {/* <AddStudent size={size} handleOpen={handleOpen} /> */}
+      <AddStudentAdmin size={addSize} fetchPlayers={fetchPlayers} allClubs={allClubs} handleOpen={handleAddOpen} />
     </div>
   );
 };
 
-export default TableThree;
+export default AllCandidateDetails;

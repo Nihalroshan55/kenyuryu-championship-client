@@ -71,6 +71,18 @@ const AdminDashBoard = () => {
               <option value="Black Belt">Black</option>
               <option value="Colour Belt">Colour</option>
             </select>
+            {selectedBelt === 'Colour Belt' && 
+            <select
+            onChange={handleGenderCategoryChange}
+            ref={gendeRef} className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
+              <option disabled selected value="">
+                Belt color
+              </option>
+              <option value={["White", "Yellow" , "Orange"]}>White, Yellow & Orange</option>
+              <option value={["Blue", "Green" , "Purple" ]}>Blue, Green & Purple </option>Brown
+              <option value={["Brown"]}>Brown</option>
+            </select>
+                }
             <select
               ref={ageCategoryRef}
               className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
@@ -88,7 +100,6 @@ const AdminDashBoard = () => {
               <option value="Senior Below 21">Senior Below 21</option>
               <option value="Senior Above 21">Senior Above 21</option>
             </select>
-
             <div className="w-full flex justify-center gap-15 rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
               <CheckboxTwo
                 key={1}
@@ -193,6 +204,7 @@ const AdminDashBoard = () => {
                 <option value="">colour</option> */}
               </select>
             )}
+            
 
             <div 
             onClick={()=>setFetch(!fetch)} 

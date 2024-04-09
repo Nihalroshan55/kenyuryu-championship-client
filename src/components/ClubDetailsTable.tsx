@@ -4,6 +4,7 @@ import SwitcherFour from './SwitcherFour';
 import { adminaxios } from '../axios/config';
 import toast from 'react-hot-toast';
 import ClubCandidatesModal from './ClubCandidates';
+import { Link } from 'react-router-dom';
 interface Candidate {
   id: number;
   name: string;
@@ -137,7 +138,7 @@ const ClubDetailsTable = () => {
                       handleOpenCandidateTable('lg');
                     }}
                     className="bg-black border-strokedark  shadow-default  text-white p-2 rounded-lg"
-                  >
+                    >
                     Open Candidates List
                   </span>
                 </td>
@@ -158,7 +159,7 @@ const ClubDetailsTable = () => {
                       handleOpen('md');
                     }}
                     className="bg-black border-strokedark  shadow-default  text-white p-2 rounded-lg"
-                  >
+                    >
                     Open Invoice
                   </span>
                 </td>
@@ -179,8 +180,8 @@ const ClubDetailsTable = () => {
         size={size}
         key={1}
         handleOpen={handleOpen}
-      />
-
+        />
+        
 <ClubCandidatesModal ClubData={ClubData as unknown as ClubData} handleOpen={handleOpenCandidateTable}  size={size4CanditesTable} />
 
     </div>
