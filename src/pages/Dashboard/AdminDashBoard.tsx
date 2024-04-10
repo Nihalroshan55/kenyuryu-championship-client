@@ -13,10 +13,12 @@ const AdminDashBoard = () => {
   const ageCategoryRef = useRef<HTMLSelectElement | null>(null);
   const gendeRef = useRef<HTMLSelectElement | null>(null);
   const weightRef = useRef<HTMLSelectElement | null>(null);
+  const beltCategory = useRef<HTMLSelectElement | null>(null);
   const [selectedBelt, setSelectedBelt] = useState('');
   const [selectedAgeCategory, setSelectedAgeCategory] = useState('');
   const [selectedGenderCategory, setSelectedGenderCategory] = useState('');
   const [selectedWeightCategory, setSelectedWeightCategory] = useState('');
+  const [selectedBeltCategory, setSelectedBeltCategory] = useState('');
   const handleSelectBeltChange = () => {
     if (selectBeltRef.current) {
       setSelectedBelt(selectBeltRef.current.value);
@@ -36,6 +38,11 @@ const AdminDashBoard = () => {
   const handleWeightCategoryChange = () => {
     if (weightRef.current) {
       setSelectedWeightCategory(weightRef.current.value);
+    }
+  };
+  const handleBeltCategoryChange = () => {
+    if (beltCategory.current) {
+      setSelectedBeltCategory(beltCategory.current.value);
     }
   };
 
@@ -73,8 +80,8 @@ const AdminDashBoard = () => {
             </select>
             {selectedBelt === 'Colour Belt' && 
             <select
-            onChange={handleGenderCategoryChange}
-            ref={gendeRef} className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
+            onChange={handleBeltCategoryChange}
+            ref={beltCategory} className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
               <option disabled selected value="">
                 Belt color
               </option>
@@ -206,7 +213,7 @@ const AdminDashBoard = () => {
             )}
             
 
-            <div 
+            <button 
             onClick={()=>setFetch(!fetch)} 
             style={{ cursor: 'pointer' }}
             className="inline-flex items-center justify-center gap-2.5 rounded-md bg-black py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10">
@@ -214,7 +221,7 @@ const AdminDashBoard = () => {
                 <FaSearch size={25} />
               </span>
               Search
-            </div>
+            </button>
           </div>
           <div ref={componentPDf} className='admindashboard-table'>
             <div className="text-center justify-center flex p-5 bg-gradient-to-r from-red-500 to-black text-white text-2xl font-bold uppercase">
@@ -234,7 +241,7 @@ const AdminDashBoard = () => {
               </th>
             </div>
 
-            <AdminDashTable  weight_category={selectedWeightCategory} age_category={selectedAgeCategory} fetch={fetch} belt_color={selectedBelt} gender={selectedGenderCategory} kata={kata}  kumite={Kumite}/>
+            <AdminDashTable color={selectedBeltCategory}  weight_category={selectedWeightCategory} age_category={selectedAgeCategory} fetch={fetch} belt_color={selectedBelt} gender={selectedGenderCategory} kata={kata}  kumite={Kumite}/>
           </div>
 
           <div className="  flex justify-center lg:justify-end gap-5  py-4 ">

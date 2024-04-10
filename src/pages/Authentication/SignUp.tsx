@@ -140,7 +140,7 @@ const SignUp = () => {
           <div className="hidden w-full xl:block xl:w-1/2">
             <div className="flex justify-center items-center">
               <img
-                src="\static\images\kumite-poster-removebg-preview.png"
+                src="\static\images\TAKESH-removebg-preview.png"
                 alt=""
                 className="max-w-full"
               />

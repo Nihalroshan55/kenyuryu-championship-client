@@ -32,9 +32,7 @@ console.log(user.user.id);
         `/api/clubs/${id}`);
   
       if (data) {
-        console.log('jhdhsddscd');
         setPaid(data.is_paid)
-        console.log(data,'hfggfgvbgbvbvv')
       } 
     } catch (error:any) {
       console.error('Error submitting form:', error);

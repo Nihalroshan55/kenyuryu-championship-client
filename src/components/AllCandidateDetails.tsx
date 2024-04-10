@@ -91,7 +91,7 @@ const AllCandidateDetails = ({ size,pdf }: any) => {
                 Name
               </th>
               <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
-              Chase No
+              Chest No
               </th>
               <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
                 Age
@@ -138,7 +138,7 @@ const AllCandidateDetails = ({ size,pdf }: any) => {
                 {item.name}
               </td>
               <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                {item.chase_no}
+                {item.chest_no}
               </td>
               <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                 {item.age}

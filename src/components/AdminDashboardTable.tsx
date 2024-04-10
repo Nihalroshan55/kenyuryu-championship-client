@@ -13,6 +13,7 @@ interface AdminDashTableProps {
   age_category?:string ;
   category?:string
   fetch:boolean;
+  color?:any
 }
 type Params = {
   gender?: string;
@@ -21,8 +22,9 @@ type Params = {
   kumite?: string;
   weight_category?: string | null;
   category: string;
+  color?:any
 };
-const AdminDashTable: React.FC<AdminDashTableProps>  = ({belt_color,gender,kata,kumite,weight_category,age_category,fetch=true}) => {
+const AdminDashTable: React.FC<AdminDashTableProps>  = ({color,belt_color,gender,kata,kumite,weight_category,age_category,fetch=true}) => {
   const [candidates, setCandidates] = useState([]);
 
   useEffect(() => {
@@ -66,6 +68,10 @@ const AdminDashTable: React.FC<AdminDashTableProps>  = ({belt_color,gender,kata,
     }
     if (age_category){
       params.category=age_category
+    }if (color){
+      console.log(color);
+      
+      params.color=color
     }
 
     if (kata && !kumite) {
@@ -82,6 +88,7 @@ const AdminDashTable: React.FC<AdminDashTableProps>  = ({belt_color,gender,kata,
         params: params
       });
 
+      console.log(params);
       
       setCandidates(response.data);
       if (response.data.length === 0) {
