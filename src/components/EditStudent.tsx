@@ -26,7 +26,6 @@ interface User {
 interface YourComponentProps {
   size: any | string | undefined; // Adjust the type for size
   handleOpen: (arg: any) => void; // Adjust the type for handleOpen if needed
-  allClubs:any
   id: number | undefined;
 }
 
@@ -34,14 +33,11 @@ const EditStudent: React.FC<YourComponentProps> = ({
   size,
   handleOpen,
   id,
-  allClubs
 }) => {
 
-  console.log(allClubs,",,,,,,,,,,,,,,,,,,,,,,,,,");
   
   const [kata, setkata] = useState(false);
   const [kumita, setkumita] = useState(false);
-  
   const formRef = useRef<HTMLFormElement | null>(null);
   
   
@@ -77,7 +73,6 @@ const EditStudent: React.FC<YourComponentProps> = ({
     const form = event.target as HTMLFormElement;
     const gender = form.elements.namedItem('gender') as HTMLInputElement;
     const name = form.elements.namedItem('name') as HTMLInputElement;
-    const club = form.elements.namedItem('club') as HTMLInputElement;
     const weightElement = form.elements.namedItem('weight') as HTMLInputElement;
     const weight = weightElement.value;
     const belt_color = form.elements.namedItem(
@@ -100,7 +95,6 @@ const EditStudent: React.FC<YourComponentProps> = ({
           name: name.value,
           gender: gender.value,
           weight: weight,
-          club:club.value,
           belt_color: belt_color.value,
           age: age.value,
           kata: kata,
@@ -116,7 +110,7 @@ const EditStudent: React.FC<YourComponentProps> = ({
       console.error('Error submitting form:', error);
     }}
   };
-  
+
   const handleSubmitButton = (event: React.MouseEvent) => {
     event.preventDefault(); // Prevent the default form submission behavior
     // Access the form using the ref and submit it
@@ -165,27 +159,6 @@ const EditStudent: React.FC<YourComponentProps> = ({
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                     />
                   </div>
-                  <div className="w-full xl:w-1/2">
-                      <label className="mb-2.5 block text-black dark:text-white">
-                        Club
-                      </label>
-                      <select
-                        required
-                        name="club"
-                        className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                        defaultValue="" // or value=""
-                      >
-                        <option disabled value={user?.club}>
-                          Select Club
-                        </option>
-                        {Array.isArray(allClubs) &&
-                          allClubs.map((club: any, index) => (
-                            <option key={index} value={club.id}>
-                              {club.name}
-                            </option>
-                          ))}
-                      </select>
-                    </div>
 
                   <div className="w-full xl:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">

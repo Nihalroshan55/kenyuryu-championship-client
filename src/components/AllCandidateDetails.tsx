@@ -7,6 +7,7 @@ import { axiosInstance } from '../axios/config';
 import toast from 'react-hot-toast';
 import EditStudent from './EditStudent';
 import AddStudentAdmin from './AddStudentAdmin';
+import EditStudentAdmin from './EditStudentAdmin';
 
 const AllCandidateDetails = ({ size,pdf }: any) => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -218,7 +219,7 @@ const AllCandidateDetails = ({ size,pdf }: any) => {
           </tbody>
         </table>
       </div>
-      <EditStudent id={editId} size={sizes} allClubs={allClubs}  handleOpen={handleOpen} />
+      <EditStudentAdmin id={editId} size={sizes} allClubs={allClubs}  handleOpen={handleOpen} />
       {/* <AddStudent size={size} handleOpen={handleOpen} /> */}
       <AddStudentAdmin size={addSize} fetchPlayers={fetchPlayers} allClubs={allClubs} handleOpen={handleAddOpen} />
     </div>

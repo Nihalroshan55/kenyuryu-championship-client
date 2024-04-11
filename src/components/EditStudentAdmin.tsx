@@ -20,12 +20,13 @@ interface User {
   category: string;
   weight_category: string;
   entry_fee: number;
-  club?: number;
+  club?: number|string;
   colours:string
 }
 interface YourComponentProps {
   size: any | string | undefined; // Adjust the type for size
   handleOpen: (arg: any) => void; // Adjust the type for handleOpen if needed
+  allClubs:any
   id: number | undefined;
 }
 
@@ -33,11 +34,13 @@ const EditStudentAdmin: React.FC<YourComponentProps> = ({
   size,
   handleOpen,
   id,
+  allClubs
 }) => {
 
   
   const [kata, setkata] = useState(false);
   const [kumita, setkumita] = useState(false);
+  
   const formRef = useRef<HTMLFormElement | null>(null);
   
   
@@ -73,6 +76,7 @@ const EditStudentAdmin: React.FC<YourComponentProps> = ({
     const form = event.target as HTMLFormElement;
     const gender = form.elements.namedItem('gender') as HTMLInputElement;
     const name = form.elements.namedItem('name') as HTMLInputElement;
+    const club = form.elements.namedItem('club') as HTMLInputElement;
     const weightElement = form.elements.namedItem('weight') as HTMLInputElement;
     const weight = weightElement.value;
     const belt_color = form.elements.namedItem(
@@ -95,6 +99,7 @@ const EditStudentAdmin: React.FC<YourComponentProps> = ({
           name: name.value,
           gender: gender.value,
           weight: weight,
+          club:club.value,
           belt_color: belt_color.value,
           age: age.value,
           kata: kata,
@@ -110,7 +115,7 @@ const EditStudentAdmin: React.FC<YourComponentProps> = ({
       console.error('Error submitting form:', error);
     }}
   };
-
+  
   const handleSubmitButton = (event: React.MouseEvent) => {
     event.preventDefault(); // Prevent the default form submission behavior
     // Access the form using the ref and submit it
@@ -141,7 +146,7 @@ const EditStudentAdmin: React.FC<YourComponentProps> = ({
         </DialogHeader>
         <DialogBody>
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-          <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
+          <div style={{ maxHeight: '800px', overflowY: 'auto' }}>
             <form ref={formRef} onSubmit={handleSubmit}>
               <div className="p-6.5">
                 <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
@@ -159,7 +164,30 @@ const EditStudentAdmin: React.FC<YourComponentProps> = ({
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                     />
                   </div>
+                  <div className="w-full xl:w-1/2">
+                      <label className="mb-2.5 block text-black dark:text-white">
+                        Club
+                      </label>
+                      <select
+                        required
+                        name="club"
+                        className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                        defaultValue="" // or value=""
+                      >
+                        <option disabled defaultValue={user?.club}>
+                          Select Club
+                        </option>
+                        {Array.isArray(allClubs) &&
+                          allClubs.map((club: any, index) => (
+                            <option key={index} value={club.id}>
+                              {club.name}
+                            </option>
+                          ))}
+                      </select>
+                    </div>
 
+                </div>
+                <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
                   <div className="w-full xl:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">
                       Age
@@ -175,8 +203,6 @@ const EditStudentAdmin: React.FC<YourComponentProps> = ({
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                     />
                   </div>
-                </div>
-                <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
                   <div className="w-full xl:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">
                       Gender
@@ -197,6 +223,9 @@ const EditStudentAdmin: React.FC<YourComponentProps> = ({
                     </select>
                   </div>
 
+                </div>
+
+                <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
                   <div className="w-full xl:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">
                       Belt
@@ -216,9 +245,6 @@ const EditStudentAdmin: React.FC<YourComponentProps> = ({
                       <option value="Colour Belt">colour</option>
                     </select>
                   </div>
-                </div>
-
-                <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
                   <div className="w-full xl:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">
                       Events
@@ -238,6 +264,8 @@ const EditStudentAdmin: React.FC<YourComponentProps> = ({
                     />
                     </div>
                   </div>
+                </div>
+                      <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
                   <div className="w-full xl:w-1/2">
                     <>
                       <label className="mb-2.5 block text-black dark:text-white">
@@ -255,8 +283,7 @@ const EditStudentAdmin: React.FC<YourComponentProps> = ({
                       />
                     </>
                   </div>
-                </div>
-               {user?.belt_color=="Colour Belt"&&<div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
+               {user?.belt_color=="Colour Belt"&&
                     <div className="w-full xl:w-1/2">
                       <label className="mb-2.5 block text-black dark:text-white">
                         Belt 
@@ -280,7 +307,8 @@ const EditStudentAdmin: React.FC<YourComponentProps> = ({
                         <option value="Brown">Brown</option>
                       </select>
                     </div>
-                  </div>}
+                  }
+                  </div>
               </div>
             </form>
             </div>
