@@ -9,6 +9,8 @@ import EditStudent from './EditStudent';
 import AddStudentAdmin from './AddStudentAdmin';
 
 const AllCandidateDetails = ({ size,pdf }: any) => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredPlayers, setFilteredPlayers] = useState([]);
   const [sizes, setSize] = React.useState(null);
   const [addSize, setAddSize] = React.useState(null);
   const [editId, seteditId] = useState()
@@ -38,18 +40,17 @@ const AllCandidateDetails = ({ size,pdf }: any) => {
   const [allClubs, setAllClubs] = useState<any>([]);
   useEffect(() => {
     fetchPlayers();
-  }, [size,sizes]);
+    fetchClub();
+    setFilteredPlayers(AllPlayers); // Initialize filtered players with all players
+  }, [size, sizes]);
 
   const fetchPlayers = async () => {
     try {
-      const { data }: any = await axiosInstance.get(
-        "/api/candidates/",
-      );
+      const { data }: any = await axiosInstance.get("/api/candidates/");
       setAllPlayers(data);
-      if (data) {
-      }
-    } catch (error: any) {
-      console.error('Error fetchitn:', error);
+      setFilteredPlayers(data); // Set filtered players initially with all players
+    } catch (error) {
+      console.error('Error fetching players:', error);
     }
   };
 
@@ -76,11 +77,39 @@ const AllCandidateDetails = ({ size,pdf }: any) => {
   };
 
   
-
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const query = e.target.value.toLowerCase();
+    console.log(query,"qqqqqqqqqqq");
+    
+    setSearchQuery(query);
+    const filtered = AllPlayers.filter((player: any) => {
+      const includesQuery = (
+        player.name?.toLowerCase().includes(query) ||
+        player.chest_no?.toLowerCase().includes(query) ||
+        player.club?.name?.toLowerCase().includes(query)
+      );
+      console.log('Player:', player, 'Include query:', includesQuery);
+      return includesQuery;
+    });
+    console.log('Filtered players:', filtered);
+    setFilteredPlayers(filtered);
+  };
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
       <div className="max-w-full overflow-x-auto lastone">
-      <div className='float-right bg-gray-2  dark:bg-meta-4 mb-5 rounded-lg'> <button onClick={() => handleAddOpen('lg')} className='w-20 p-2'>ADD</button> </div>
+      <div className='flex justify-between bg-gray-2  dark:bg-meta-4 mb-5 rounded-lg p-3  '> 
+      <div className="">
+            <input
+              required
+              type="text"
+              name="search"
+              minLength={3}
+              placeholder="Search"
+              className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+              onChange={handleSearch}
+            />
+          </div>
+                    <button onClick={() => handleAddOpen('lg')} className='w-20 p-2 bg-form-input'>ADD</button> </div>
         <table className=" w-full table-auto lastone">
           <thead >
             <tr className="bg-gray-2 text-left dark:bg-meta-4">
@@ -123,7 +152,7 @@ const AllCandidateDetails = ({ size,pdf }: any) => {
             </tr>
           </thead>
           <tbody>
-            {AllPlayers.length!=0?AllPlayers.map((item:any, index) => (
+            {filteredPlayers.length!=0?filteredPlayers.map((item:any, index) => (
               
               <tr key={index}>
               {/* <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
