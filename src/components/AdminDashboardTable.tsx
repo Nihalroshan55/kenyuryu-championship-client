@@ -26,6 +26,8 @@ type Params = {
 };
 const AdminDashTable: React.FC<AdminDashTableProps>  = ({color,belt_color,gender,kata,kumite,weight_category,age_category,fetch=true}) => {
   const [candidates, setCandidates] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredPlayers, setFilteredPlayers] = useState([]);
 
   useEffect(() => {
     // Fetch candidates data from the API
@@ -89,7 +91,7 @@ const AdminDashTable: React.FC<AdminDashTableProps>  = ({color,belt_color,gender
       });
 
       console.log(params);
-      
+      setFilteredPlayers(response.data)
       setCandidates(response.data);
       if (response.data.length === 0) {
         toast.error('No candidates found.')
@@ -100,11 +102,41 @@ const AdminDashTable: React.FC<AdminDashTableProps>  = ({color,belt_color,gender
       
     }
   };
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const query = e.target.value.toLowerCase();
+    console.log(query,"qqqqqqqqqqq");
+    
+    setSearchQuery(query);
+    const filtered = candidates.filter((player: any) => {
+      const includesQuery = (
+        player.name?.toLowerCase().includes(query) ||
+        player.chest_no?.toLowerCase().includes(query) ||
+        player.club?.name?.toLowerCase().includes(query)
+      );
+      console.log('Player:', player, 'Include query:', includesQuery);
+      return includesQuery;
+    });
+    console.log('Filtered players:', filtered);
+    setFilteredPlayers(filtered);
+  };
 
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+                  
       <div className="max-w-full overflow-x-auto">
-      {candidates.length === 0 ? (
+      <div className="">
+            <input
+              required
+              type="text"
+              name="search"
+              minLength={3}
+              placeholder="Search"
+              className="w-64 mb-5 rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+              onChange={handleSearch}
+            />
+          </div>
+        
+      {filteredPlayers.length === 0 ? (
           <p>No candidates found.</p>
         ) : (
         <table className="w-full table-auto admindashboard-table">
@@ -135,7 +167,7 @@ const AdminDashTable: React.FC<AdminDashTableProps>  = ({color,belt_color,gender
             </tr>
           </thead>
           <tbody className="admindashboard-table-tr">
-            {candidates.map((candidate:any, index) => (
+            {filteredPlayers.map((candidate:any, index) => (
               <tr key={index}>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   {index+1}

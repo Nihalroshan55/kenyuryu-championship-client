@@ -14,7 +14,10 @@ const AllCandidateDetails = ({ size,pdf }: any) => {
   const [sizes, setSize] = React.useState(null);
   const [addSize, setAddSize] = React.useState(null);
   const [editId, seteditId] = useState()
-  const handleOpen = (value: any) => setSize(value);
+  const handleOpen = (value: any) => {
+    setSize(value);
+    fetchClub();
+  }
   const handleAddOpen = (value: any) => {
     setAddSize(value);
     fetchClub();
@@ -43,7 +46,6 @@ const AllCandidateDetails = ({ size,pdf }: any) => {
     fetchClub();
     setFilteredPlayers(AllPlayers); // Initialize filtered players with all players
   }, [size, sizes]);
-
   const fetchPlayers = async () => {
     try {
       const { data }: any = await axiosInstance.get("/api/candidates/");
@@ -109,7 +111,7 @@ const AllCandidateDetails = ({ size,pdf }: any) => {
               onChange={handleSearch}
             />
           </div>
-                    <button onClick={() => handleAddOpen('lg')} className='w-20 p-2 bg-form-input'>ADD</button> </div>
+            <button onClick={() => handleAddOpen('lg')} className='w-20 p-2 bg-form-input'>ADD</button> </div>
         <table className=" w-full table-auto lastone">
           <thead >
             <tr className="bg-gray-2 text-left dark:bg-meta-4">
@@ -216,7 +218,7 @@ const AllCandidateDetails = ({ size,pdf }: any) => {
           </tbody>
         </table>
       </div>
-      <EditStudent id={editId} size={sizes} handleOpen={handleOpen} />
+      <EditStudent id={editId} size={sizes} allClubs={allClubs}  handleOpen={handleOpen} />
       {/* <AddStudent size={size} handleOpen={handleOpen} /> */}
       <AddStudentAdmin size={addSize} fetchPlayers={fetchPlayers} allClubs={allClubs} handleOpen={handleAddOpen} />
     </div>

@@ -3,6 +3,7 @@ import { NavLink, useLocation } from 'react-router-dom';
 import Logo from '../images/logo/logo.svg';
 import SidebarLinkGroup from './SidebarLinkGroup';
 import { TbUsersGroup } from "react-icons/tb";
+import { FaUsersGear } from "react-icons/fa6";
 import { RxDashboard } from "react-icons/rx";
 import { MdManageAccounts } from 'react-icons/md';
 interface SidebarProps {
@@ -149,7 +150,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     'bg-graydark dark:bg-meta-4'
                   }`}
                 >
-                  <MdManageAccounts size={20} />
+                  {/* <MdManageAccounts size={20} /> */}
+                  <FaUsersGear  size={20} />
                   All Candidates
                 </NavLink>
               </li>

@@ -10,6 +10,8 @@ import EditStudent from './EditStudent';
 const TableThree = ({ size,pdf }: any) => {
   const [sizes, setSize] = React.useState(null);
   const [editId, seteditId] = useState()
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredPlayers, setFilteredPlayers] = useState([]);
   const handleOpen = (value: any) => setSize(value);
   const { id } = JSON.parse(localStorage.getItem('user') as string).user;
 
@@ -24,6 +26,7 @@ const TableThree = ({ size,pdf }: any) => {
         `/api/candidates/club_candidates/?club=${id}`,
       );
       setAllPlayers(data);
+      setFilteredPlayers(data)
       if (data) {
       }
     } catch (error: any) {
@@ -54,10 +57,42 @@ const TableThree = ({ size,pdf }: any) => {
   };
 
   
-
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const query = e.target.value.toLowerCase();
+    console.log(query,"qqqqqqqqqqq");
+    
+    setSearchQuery(query);
+    const filtered = AllPlayers.filter((player: any) => {
+      const includesQuery = (
+        player.name?.toLowerCase().includes(query) ||
+        player.chest_no?.toLowerCase().includes(query) ||
+        player.club?.name?.toLowerCase().includes(query)
+      );
+      console.log('Player:', player, 'Include query:', includesQuery);
+      return includesQuery;
+    });
+    console.log('Filtered players:', filtered);
+    setFilteredPlayers(filtered);
+  };
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
       <div className="max-w-full overflow-x-auto lastone">
+      <div className='flex justify-between bg-gray-2  dark:bg-meta-4 mb-5 rounded-lg p-3  '> 
+      <div className="">
+            <input
+              required
+              type="text"
+              name="search"
+              minLength={3}
+              placeholder="Search"
+              className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+              onChange={handleSearch}
+            />
+          </div>
+                    {/* <button 
+                    onClick={() => handleAddOpen('lg')} 
+                    className='w-20 p-2 bg-form-input'>ADD</button>  */}
+                    </div>
         <table className=" w-full table-auto lastone">
           <thead >
             <tr className="bg-gray-2 text-left dark:bg-meta-4">
@@ -82,6 +117,9 @@ const TableThree = ({ size,pdf }: any) => {
               <th className="py-4 px-4 font-medium text-black dark:text-white">
                 Belt
               </th>
+              {/* <th className="py-4 px-4 font-medium text-black dark:text-white">
+                Club
+              </th> */}
               <th className="py-4 px-4 font-medium text-black dark:text-white">
                 Kata
               </th>
@@ -94,7 +132,7 @@ const TableThree = ({ size,pdf }: any) => {
             </tr>
           </thead>
           <tbody>
-            {AllPlayers.length!=0?AllPlayers.map((item:any, index) => (
+            {filteredPlayers.length!=0?filteredPlayers.map((item:any, index) => (
               
               <tr key={index}>
               {/* <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
@@ -123,6 +161,9 @@ const TableThree = ({ size,pdf }: any) => {
               </td><td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                 {item.colours}
               </td>
+              {/* <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                {item.club}
+              </td> */}
               <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                {item.kata?<IoCheckmarkDoneSharp size={25} />:<MdOutlineNotInterested size={25} />} 
               </td>
