@@ -47,7 +47,12 @@ const AddStudent: React.FC<YourComponentProps> = ({ size, handleOpen }) => {
       (belt_color.value=="Colour Belt"&&!belt.value)
     ) {
       alert('please Fill All Input Fields');
-    } else {
+    
+    }
+    else if( weight <10){
+      alert("weight can't bo less than 10");
+    }
+     else {
       if (buttonRef.current && !buttonRef.current.disabled) {
         buttonRef.current.disabled = true;
         try {
