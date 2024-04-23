@@ -16,6 +16,7 @@ import { MdOutlineNotInterested } from 'react-icons/md';
 interface Candidate {
   id: number;
   name: string;
+  chest_no:string;
   age: number;
   gender: string;
   belt_color: string;
@@ -110,6 +111,9 @@ const ClubCandidatesModal: React.FC<YourComponentProps> = ({
                                 Name
                               </th>
                               <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
+                                Chest No 
+                              </th>
+                              <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
                                 Age Category
                               </th>
                               <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
@@ -133,6 +137,9 @@ const ClubCandidatesModal: React.FC<YourComponentProps> = ({
                                 <tr key={index}>
                                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                                     {item.name}
+                                  </td>
+                                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                                    {item.chest_no}
                                   </td>
                                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                                     {item.category}
