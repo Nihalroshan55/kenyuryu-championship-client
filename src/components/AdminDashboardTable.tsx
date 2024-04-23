@@ -149,6 +149,9 @@ const AdminDashTable: React.FC<AdminDashTableProps>  = ({color,belt_color,gender
                 Name
               </th>
               <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
+                Chest No
+              </th>
+              <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
                 Age
               </th>
               <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
@@ -174,6 +177,9 @@ const AdminDashTable: React.FC<AdminDashTableProps>  = ({color,belt_color,gender
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   {candidate.name}
+                </td>
+                <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                  {candidate.chest_no}
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   {candidate.age}
