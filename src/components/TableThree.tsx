@@ -65,7 +65,7 @@ const TableThree = ({ size,pdf }: any) => {
     const filtered = AllPlayers.filter((player: any) => {
       const includesQuery = (
         player.name?.toLowerCase().includes(query) ||
-        player.chest_no?.toLowerCase().includes(query) ||
+        player.id?.toLowerCase().includes(query) ||
         player.club?.name?.toLowerCase().includes(query)
       );
       console.log('Player:', player, 'Include query:', includesQuery);
@@ -150,7 +150,7 @@ const TableThree = ({ size,pdf }: any) => {
                 {item.name}
               </td>
               <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                {item.chest_no}
+                {item.id}
               </td>
               <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                 {item.age}

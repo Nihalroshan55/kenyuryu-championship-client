@@ -110,7 +110,7 @@ const AdminDashTable: React.FC<AdminDashTableProps>  = ({color,belt_color,gender
     const filtered = candidates.filter((player: any) => {
       const includesQuery = (
         player.name?.toLowerCase().includes(query) ||
-        player.chest_no?.toLowerCase().includes(query) ||
+        player.id?.toLowerCase().includes(query) ||
         player.club?.name?.toLowerCase().includes(query)
       );
       console.log('Player:', player, 'Include query:', includesQuery);
@@ -179,7 +179,7 @@ const AdminDashTable: React.FC<AdminDashTableProps>  = ({color,belt_color,gender
                   {candidate.name}
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                  {candidate.chest_no}
+                  {candidate.id}
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   {candidate.age}
