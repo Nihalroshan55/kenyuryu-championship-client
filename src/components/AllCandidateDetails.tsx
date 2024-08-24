@@ -170,7 +170,7 @@ const AllCandidateDetails = ({ size,pdf }: any) => {
                 {item.name}
               </td>
               <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                {item.id}
+                {item.chest_no}
               </td>
               <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                 {item.age}
