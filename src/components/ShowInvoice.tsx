@@ -133,7 +133,7 @@ const InvoiceModal: React.FC<YourComponentProps> = ({
                           <td className="py-2 px-2 sm:px-4">
                             {invoice?.Kata_only_candidates_count || 0}
                           </td>
-                          <td className="py-2 px-2 sm:px-4">800.00</td>
+                          <td className="py-2 px-2 sm:px-4">1000.00</td>
                           <td className="py-2 px-2 sm:px-4">
                             {invoice?.Total_kata_only_entry_fee || 0}.00
                           </td>
@@ -143,7 +143,7 @@ const InvoiceModal: React.FC<YourComponentProps> = ({
                           <td className="py-2 px-2 sm:px-4">
                             {invoice?.Kumite_only_candidates_count || 0}
                           </td>
-                          <td className="py-2 px-2 sm:px-4">800.00</td>
+                          <td className="py-2 px-2 sm:px-4">1000.00</td>
                           <td className="py-2 px-2 sm:px-4">
                             {invoice?.Total_kumite_only_entry_fee || 0}.00
                           </td>
@@ -153,7 +153,7 @@ const InvoiceModal: React.FC<YourComponentProps> = ({
                           <td className="py-2 px-2 sm:px-4">
                             {invoice?.Kumite_and_Kata_candidates_count || 0}
                           </td>
-                          <td className="py-2 px-2 sm:px-4">1600.00</td>
+                          <td className="py-2 px-2 sm:px-4">1500.00</td>
                           <td className="py-2 px-2 sm:px-4">
                             {invoice?.Total_Kata_Kumite_entry_fee || 0}.00
                           </td>
