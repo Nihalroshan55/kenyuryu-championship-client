@@ -41,7 +41,7 @@ const TableThree = ({ size,pdf }: any) => {
     if (userConfirmed) {
       // Perform the actual delete action
       try {
-        const { data }: any = await axiosInstance.delete(`/api/candidates/${id}`);
+        const { data }: any = await axiosInstance.delete(`/api/candidates/${id}/`);
         fetchPlayers()
         if (data) {
           toast.success('Player Deleted Successfully', {
