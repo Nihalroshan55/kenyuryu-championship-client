@@ -106,7 +106,7 @@ const InvoiceModal: React.FC<YourComponentProps> = ({
                       <div className="text-sm text-white mb-4 sm:mb-0">
                         <div className="font-bold">From:</div>
                         <div>ORGANISING COMMITE </div>
-                        <div>ISKA</div>
+                        <div>Sigin</div>
                       </div>
                       {/* To */}
                       <div className="text-sm text-white">
