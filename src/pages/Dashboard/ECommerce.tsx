@@ -69,14 +69,14 @@ console.log(user.user.id);
             <div ref={componentPDf} className="admindashboard-table">
               <div className="text-center justify-center flex p-5 bg-gradient-to-r from-red-500 to-black text-white text-2xl font-bold uppercase">
                 <p className="admindashboard-table-criteria">
-                NATIONAL ISKA OPEN KARATE  CHAMPIONSHIP 2024
+                KIMURA CUP 2024
                 </p>
               </div>
 
               <TableThree pdf={pdf} size={size} />
             </div>
             <div className=" border-stroke flex gap-3 justify-end py-4 dark:border-strokedark cursor-pointer">
-            {/* {!paid?(
+            {!paid?(
               <div
                 onClick={() => handleOpen('lg')}
                 className="inline-flex items-center  justify-center gap-2.5 rounded-md bg-black py-2 px-3 md:py-4 md:px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
@@ -85,7 +85,7 @@ console.log(user.user.id);
                   <IoPersonAddOutline size={25} />
                 </span>
                 Add Student
-              </div>):null} */}
+              </div>):null}
               <div
                 onClick={generatesPDF}
                 className="inline-flex items-center  justify-center gap-2.5 rounded-md bg-black py-2 px-3 md:py-4 md:px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"

@@ -36,18 +36,6 @@ const AdminDashTable: React.FC<AdminDashTableProps>  = ({color,belt_color,gender
     } 
   }, [fetch]); 
   const fetchData = async () => {
-
-    // let params= {
-
-    //   gender: gender=="Male"?"M":gender=="Female"?"F":"N", 
-    //   belt_color: belt_color, 
-    //   kata: kata?"True":"False", 
-    //   kumite:kumite?"True":"False",
-    //   weight_category:kumite? weight_category:null, 
-    //   category:age_category
-    // }
-
-    
     let params: Partial<Params> = {};
     if(gender=="Male"){
       params.gender ='M';
@@ -104,18 +92,19 @@ const AdminDashTable: React.FC<AdminDashTableProps>  = ({color,belt_color,gender
   };
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value.toLowerCase();
-    console.log(query,"qqqqqqqqqqq");
     
     setSearchQuery(query);
+    
     const filtered = candidates.filter((player: any) => {
       const includesQuery = (
         player.name?.toLowerCase().includes(query) ||
-        player.id?.toLowerCase().includes(query) ||
+        (typeof player.id === 'string' && player.id.toLowerCase().includes(query)) ||  // Ensure id is a string
         player.club?.name?.toLowerCase().includes(query)
       );
       console.log('Player:', player, 'Include query:', includesQuery);
       return includesQuery;
     });
+  
     console.log('Filtered players:', filtered);
     setFilteredPlayers(filtered);
   };

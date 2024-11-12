@@ -59,18 +59,19 @@ const TableThree = ({ size,pdf }: any) => {
   
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value.toLowerCase();
-    console.log(query,"qqqqqqqqqqq");
     
     setSearchQuery(query);
+    
     const filtered = AllPlayers.filter((player: any) => {
       const includesQuery = (
         player.name?.toLowerCase().includes(query) ||
-        player.id?.toLowerCase().includes(query) ||
+        (typeof player.id === 'string' && player.id.toLowerCase().includes(query)) ||  // Ensure id is a string
         player.club?.name?.toLowerCase().includes(query)
       );
       console.log('Player:', player, 'Include query:', includesQuery);
       return includesQuery;
     });
+  
     console.log('Filtered players:', filtered);
     setFilteredPlayers(filtered);
   };

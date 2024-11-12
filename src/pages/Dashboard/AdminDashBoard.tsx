@@ -8,7 +8,7 @@ import '../../components/PrintableComponent.css';
 const AdminDashBoard = () => {
   const [kata, setkata] = useState(false);
   const [Kumite, setkumita] = useState(false);
-  const [fetch,setFetch]=useState(false);
+  const [fetch,setFetch]=useState(true);
   const selectBeltRef = useRef<HTMLSelectElement | null>(null);
   const ageCategoryRef = useRef<HTMLSelectElement | null>(null);
   const gendeRef = useRef<HTMLSelectElement | null>(null);
@@ -64,6 +64,7 @@ const AdminDashBoard = () => {
               <option disabled selected value="">
                 Select Gender
               </option>
+              <option value="">All</option>
               <option value="Male">Male</option>
               <option value="Female">Female</option>
             </select>
@@ -75,6 +76,7 @@ const AdminDashBoard = () => {
               <option disabled selected value="">
                 Select Belt
               </option>
+              <option value="">All</option>
               <option value="Black Belt">Black</option>
               <option value="Colour Belt">Colour</option>
             </select>
@@ -85,6 +87,7 @@ const AdminDashBoard = () => {
               <option disabled selected value="">
                 Belt color
               </option>
+              <option value="">All</option>
               <option value={["White", "Yellow" , "Orange"]}>White, Yellow & Orange</option>
               <option value={["Blue", "Green" , "Purple" ]}>Blue, Green & Purple </option>Brown
               <option value={["Brown"]}>Brown</option>
@@ -98,6 +101,7 @@ const AdminDashBoard = () => {
               <option disabled selected value="">
                 Select Age-Category
               </option>
+              <option value="" >All</option>
               {selectedBelt === 'Colour Belt' && (
                 <option value="Mini Sub Junior">Mini Sub Junior</option>
               )}
@@ -211,8 +215,6 @@ const AdminDashBoard = () => {
                 <option value="">colour</option> */}
               </select>
             )}
-            
-
             <button 
             onClick={()=>setFetch(!fetch)} 
             style={{ cursor: 'pointer' }}
@@ -226,7 +228,7 @@ const AdminDashBoard = () => {
           <div ref={componentPDf} className='admindashboard-table'>
             <div className="text-center justify-center flex p-5 bg-gradient-to-r from-red-500 to-black text-white text-2xl font-bold uppercase">
               <p className="admindashboard-table-criteria">
-              NATIONAL ISKA OPEN KARATE  CHAMPIONSHIP 2024
+              KIMURA CUP 2024
               </p>
             </div>
             
