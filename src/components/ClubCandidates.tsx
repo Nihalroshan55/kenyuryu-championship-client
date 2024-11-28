@@ -107,6 +107,9 @@ const ClubCandidatesModal: React.FC<YourComponentProps> = ({
                         <table className=" w-full table-auto ">
                           <thead>
                             <tr className="bg-gray-2 text-left dark:bg-meta-4">
+                            <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
+                                SI
+                              </th>
                               <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
                                 Name
                               </th>
@@ -135,6 +138,9 @@ const ClubCandidatesModal: React.FC<YourComponentProps> = ({
                             {ClubData?.candidates?.length != 0 ? (
                               ClubData?.candidates?.map((item, index) => (
                                 <tr key={index}>
+                                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                                    {index+1}
+                                  </td>
                                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                                     {item.name}
                                   </td>
